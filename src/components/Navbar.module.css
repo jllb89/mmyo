@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.navbarContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+  width: 100%;
+  font-weight: 300;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.navbarLogo {
+  z-index: 1001;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.closeButton {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.linksWrapper {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.linkWrapper {
+  position: relative;
+}
+
+.subMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #CBBAA1;
+  color: #535E6B;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  white-space: nowrap;
+  padding: 2.5rem;
+  box-sizing: border-box;
+}
+
+.subMenuHeader {
+  font-weight: 400;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.subMenuDivider {
+  width: 100%;
+  height: 1px;
+  background-color: #535E6B;
+  margin-bottom: 1rem;
+}
+
+.subLink {
+  display: block;
+  padding: 0.5rem 0;
+  color: #535E6B; /* Ensuring sublink color is #535E6B */
+  text-decoration: none;
+  padding-bottom: .8rem;
+}
+
+.subLink:hover {
+  text-decoration: underline;
+}
+
+.hoverEffect:hover .subMenu {
+  display: block;
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.fullWidthLink {
+  width: 100%;
+  padding: 1rem;
+}
+
+.languageSwitcher {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+  }
+
+  .linksWrapper {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #535E6B;
+    padding: 2rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 1000;
+    gap: 2rem;
+  }
+
+  .linksWrapper.open {
+    display: flex;
+  }
+
+  .closeButton {
+    display: block;
+  }
+
+  .logoWrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+/*     z-index: 1001;
+ */  }
+
+  .linkWrapper {
+    width: 100%;
+  }
+
+  .subMenu {
+    display: none;
+    position: static;
+    box-shadow: none;
+    padding-left: 2rem;
+    background-color: transparent;
+    color: #CBBAA1;
+  }
+
+  .subMenu.open {
+    display: block;
+  }
+
+  .link {
+    width: 100%;
+    font-size: 1.3rem;
+  }
+
+  .link:hover {
+    text-decoration: none;
+  }
+
+  .subLink {
+    color: #CBBAA1;
+    font-size: 1rem;
+    padding-bottom: 1.1rem;
+  }
+
+  .subLink:hover {
+    text-decoration: none;
+  }
+}

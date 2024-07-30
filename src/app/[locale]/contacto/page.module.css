@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+
+.content {
+    background-color: #535E6B;
+    margin: 0;
+    height: auto;
+}
+
+.texts {
+    max-width: 1200px;
+    margin: auto;
+    padding-top: 10rem;
+    padding-bottom: 1rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.texts h1 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: 4rem;
+    text-align: left;
+    margin: 0;
+    padding-bottom: 4rem;
+    padding-left: 1rem;
+    max-width: 20vw;
+    color: #CBBAA1;
+}
+
+.pageText {
+    max-width: 30vw;
+    text-align: left;
+    padding-left: 1rem; /* Ensuring alignment with the h1 */
+}
+
+.texts p {
+    padding-bottom: 2rem;
+    padding-left: 4rem;
+    color: #ffffff;
+    line-height: 150%;
+    text-align: left;
+}
+
+.contactData {
+    display: flex;
+    padding: 2rem 1rem;
+    color: #ffffff;
+    padding-left: 4rem;
+}
+
+.contactColumn {
+    flex: 0 0 auto; /* Prevent columns from growing and ensure they only take up the necessary space */
+    padding: 0 1rem;
+    margin-right: 2rem; /* Add margin to separate the columns */
+}
+
+.contactColumn:last-child {
+    margin-right: 0; /* Remove margin from the last column */
+}
+
+.contactColumn h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: .8rem;
+    color: #CBBAA1;
+    margin-bottom: 0.5rem;
+}
+
+.contactColumn p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: .8rem;
+    color: #ffffff;
+}
+
+.contactLink {
+    color: #CBBAA1;
+    text-decoration: none;
+}
+
+.contactLink:hover {
+    text-decoration: underline;
+}
+
+.formWrapper {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}

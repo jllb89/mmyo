@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+
+.applicationForm {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    height: auto;
+    justify-content: flex-start;
+    background-color: #535E6B;
+    padding-bottom: 6rem;
+}
+
+.form {
+    width: 100%;
+    max-width: 30vw;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 2rem;
+}
+
+.form h2 {
+    font-family: 'Inter', sans-serif;
+    color: #CBBAA1;
+    font-weight: 200;
+    font-size: 2rem;
+    text-align: left;
+    margin: 0;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.input {
+    flex: 1;
+    border: none;
+    border-bottom: 2px solid #CBBAA1;
+    background: none;
+    color: #CBBAA1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: 1.5rem;
+    padding: 1.5rem 0;
+    outline: none;
+    width: 100%;
+}
+
+.input::placeholder {
+    color: #CBBAA1;
+    opacity: 0.3;
+    font-weight: 200;
+    font-size: 1.5rem;
+}
+
+.textarea {
+    flex: 1;
+    border: 2px solid #CBBAA1;
+    background: none;
+    color: #CBBAA1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: 1.5rem;
+    outline: none;
+    width: 100% - .8rem;
+    height: 10rem;
+    resize: none;
+    margin-top: 3rem;
+    padding: .8rem;
+}
+
+.textarea::placeholder {
+    color: #CBBAA1;
+    opacity: 0.3;
+    font-weight: 200;
+    font-size: 1.5rem;
+}
+
+.fileLabel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    color: #CBBAA1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: 1.5rem;
+    text-decoration: underline;
+    padding: 1.5rem 0;
+    cursor: pointer;
+}
+
+.fileInput {
+    display: none;
+}
+
+.buttonContainer {
+    width: 70vw;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5rem;
+}
+
+.submitButton {
+    background-color: #CBBAA1;
+    color: #535E6B;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: .7rem;
+    text-align: left;
+    padding: 1rem;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+}
+
+.submitButton:hover {
+    background-color: #CBBAA1;
+    color: #535E6B;
+}
+
+.errorContainer {
+    min-height: 1.5rem;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.error {
+    color: rgb(243, 48, 48);
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.confirmation {
+    font-family: 'Inter', sans-serif;
+    color: #CBBAA1;
+    font-weight: 200;
+    font-size: 1.5rem;
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

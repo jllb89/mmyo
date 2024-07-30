@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+
+.footer {
+    background-color: #CBBAA1;
+    color: #535E6B;
+    bottom: 0;
+    width: 100%;
+    height: 70vh;
+    padding-top: 2rem;
+}
+
+.footerContent {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem;
+}
+
+.footerLogo {
+    padding-bottom: 2rem;
+}
+
+.navbarLogo {
+    cursor: pointer;
+}
+
+.footerRow {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.footerColumn50 {
+    width: 50%;
+    transform: translateY(-10%);
+}
+
+.footerColumn50email {
+    transform: translateY(30%);
+}
+
+.footerColumn25 {
+    width: 25%;
+}
+
+.footerColumn25 h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.footerColumn25 ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footerColumn25 li {
+    margin-bottom: 0.5rem;
+}
+
+.footerColumn25 li a {
+    color: #535E6B;
+    text-decoration: none;
+    margin-right: 1rem; /* Add space between links */
+}
+
+.footerColumn25 li a:hover {
+    text-decoration: underline;
+}
+
+.footerColumn50 p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-size: 2rem;
+    line-height: 1.3;
+    padding-right: 1rem;
+}
+
+.footer li {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: .8rem;
+    padding-bottom: 1rem;
+}
+
+.footer h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: .8rem;
+    padding-bottom: .5rem;
+}
+
+.address {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: .8rem;
+    padding-bottom: .5rem;
+    line-height: 2rem;
+}
+
+.address span {
+    line-height: inherit;
+}
+
+.footerColumn50email p {
+    text-decoration: underline;
+}
+
+.lastFooterRow {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4rem;
+}
+
+.footerLegal {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: .7rem;
+}
