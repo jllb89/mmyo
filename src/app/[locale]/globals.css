@@ -8,8 +8,9 @@ body {
   background-color: #F3F5F6;
   color: #535E6B;
   margin: 0;
+  overflow-y: visible;
 }
 
 a:any-link {
-  cursor: auto;
+  cursor: pointer;
 }

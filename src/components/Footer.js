@@ -8,11 +8,7 @@ import Image from 'next/image';
 export default function Footer() {
     const { t } = useTranslation('footer');
 
-    const addressLines = `Corporativo Espacio Santa Fé,
-Carretera México Toluca 5420-2604,
-Col. El Yaqui.
-CP 05320
-CDMX.`.split('\n');
+    const addressLines = `Corporativo Espacio Santa Fé, Carretera México Toluca 5420-2604, Col. El Yaqui. CP 05320. CDMX.`.split('\n');
 
     return (
         <div className={styles.footer}>
@@ -26,7 +22,7 @@ CDMX.`.split('\n');
                     <div className={styles.footerColumn50}>
                         <p>{t('column-1')}</p>
                     </div>
-                    <div className={styles.footerColumn25}>
+                    <div className={`${styles.footerColumn25} ${styles.hideOnMobile}`}>
                         <h3>{t('column-2-services')}</h3>
                         <ul>
                             <li><Link href="/fiscal">{t('column-2-link1')}</Link></li>
@@ -50,7 +46,9 @@ CDMX.`.split('\n');
                     <div className={styles.footerColumn50}>
                         <div className={styles.footerColumn50email}>
                             <h3>Email:</h3>
-                            <p>mmyo@mmyo.com.mx</p>
+                            <p>
+                                <Link href="mailto:mmyo@mmyo.com.mx">mmyo@mmyo.com.mx</Link>
+                            </p>
                         </div>
                     </div>
                     <div className={styles.footerColumn25}>
@@ -87,5 +85,6 @@ CDMX.`.split('\n');
                 </div>
             </div>
         </div>
+
     );
 }

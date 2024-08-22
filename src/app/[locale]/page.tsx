@@ -34,7 +34,11 @@ export default async function Home({ params: { locale } }: { params: { locale: s
         <div className={styles.homeContent}>
           <div className={styles.p1}>
             <div className={styles.textContainer}>
-              <h2>{t("p1")}</h2>
+              <h2>
+                {t("p1").split("Muñoz Manzo y Ocampo")[0]}
+                <span className={styles.highlight}>Muñoz Manzo y Ocampo</span>
+                {t("p1").split("Muñoz Manzo y Ocampo")[1]}
+              </h2>
             </div>
             <hr className={styles.horizontalLine} />
           </div>

@@ -26,7 +26,6 @@ export default async function Home({ params: { locale } }: { params: { locale: s
               <li><Link href="/legal/litigio-contencioso" className={styles.subLink}>{t('navbar:litigio-fiscal')}</Link></li>
               <li><Link href="/legal/litigio-constitucional-fiscal" className={styles.subLink}>{t('navbar:litigio-constitucional')}</Link></li>
               <li><Link href="/legal/solucion-anticipada-de-controversias" className={styles.subLink}>{t('navbar:solucion-controversias')}</Link></li>
-            
             </ul>
           </div>
         </div>

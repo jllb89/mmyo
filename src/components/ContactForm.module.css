@@ -12,13 +12,14 @@
 
 .form {
     width: 100%;
-    max-width: 30vw;
+    max-width: 50vw;
     margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     padding: 2rem;
+    padding-right: 4rem;
 }
 
 .form h2 {
@@ -157,4 +158,37 @@
     to {
         opacity: 1;
     }
+}
+
+
+@media (max-width: 900px) {
+    .form {
+        max-width: 80vw;
+    }
+
+    .input {
+        font-size: 1.2rem;
+    }
+    
+    .textarea {
+        font-size: 1.2rem;
+    }
+
+    .input::placeholder {
+        font-size: 1.2rem;
+    }
+
+    .buttonContainer {
+        width: 90vw;
+    }
+
+    .textarea {
+        font-size: 1.2rem;
+        height: 30rem;
+        margin-top: 2rem;
+    }
+
+    .textarea::placeholder {
+        font-size: 1.2rem;
+    }    
 }

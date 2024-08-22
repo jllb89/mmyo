@@ -25,14 +25,13 @@
     margin: 0;
     padding-bottom: 4rem;
     padding-left: 1rem;
-    max-width: 20vw;
+    max-width: 40vw;
     color: #CBBAA1;
 }
 
 .pageText {
-    max-width: 30vw;
+    max-width: 40vw;
     text-align: left;
-    padding-left: 1rem; /* Ensuring alignment with the h1 */
 }
 
 .texts p {
@@ -71,4 +70,25 @@
     display: flex;
     justify-content: flex-end;
     width: 100%;
+}
+
+@media (max-width: 900px) {
+
+    .texts h1 {
+        max-width: 90vw;
+        font-size: 2.5rem;
+        padding-bottom: 2rem;
+    }
+
+    .pageText {
+        max-width: 90vw;
+    }
+
+    .formWrapper {
+        justify-content:center;
+    }
+
+    .texts p {
+        padding-bottom: 0;
+    }
 }

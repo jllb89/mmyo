@@ -8,7 +8,7 @@
 .header {
     display: flex;
     justify-content: center;
-    align-items: flex-end; /* Align items to the bottom */
+    align-items: flex-end;
     height: 65vh;
     background-color: #CBBAA1;
     background-size: cover;
@@ -169,6 +169,12 @@
     padding-top: 2rem;
 }
 
+.teamGrid {
+    max-width: 1200px;
+    margin: auto;
+    padding-bottom: 4rem;
+}
+
 .gridContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -177,8 +183,12 @@
 }
 
 .gridItem {
-    padding: 1rem;
+    padding: 2rem;
     position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
 }
 
 .name {
@@ -188,7 +198,6 @@
     color: #535E6B;
     margin: 1rem 0;
     position: relative;
-    cursor: pointer;
 }
 
 .position {
@@ -212,25 +221,176 @@
 }
 
 .imageWrapper {
-    position: absolute;
-    left: 80%;
-    top: 0;
     display: none;
-    z-index: 10;
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
 }
 
-.gridItem:hover .imageWrapper {
+.gridItem:hover .imageWrapper,
+.gridItem.clicked .imageWrapper {
     display: block;
+    animation-name: fadeInSlideUp;
+}
+
+.gridItem.clicked .imageWrapper {
+    animation-name: fadeOutSlideDown;
 }
 
 .image {
-    width: 400px;
+    width: 100%;
+    max-width: 200px;
     height: auto;
 }
 
-/* Responsive styles */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutSlideDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+@media (max-width: 1200px) {
+    .logoContainer img {
+        width: 400px !important;
+        height: 543px !important;
+    }
+
+    .headerContainer {
+        background-color: #535E6B;
+        max-width: 700px;
+    }
+
+    .logoContainer {
+        display: flex;
+        justify-content: flex-end;
+        max-width: 1200px;
+        width: 100%;
+        margin: auto;
+        transform: translateY(-80%);
+        margin-bottom: -30rem;
+    }
+}
+
 @media (max-width: 768px) {
     .gridContainer {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .imageWrapper {
+        display: none;
+    }
+
+    .gridItem.clicked .imageWrapper {
+        display: block;
+    }
+}
+
+
+
+@media (max-width: 900px) {
+
+    .headerContainer {
+        max-width: 500px;
+    }
+
+    .logoContainer {
+        display: none;
+    }
+
+    .headerText {
+        max-width: 90%;
+        padding-top: .5rem;
+        line-height: 2rem;
+    }
+
+    .homeContent {
+        padding: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .contentTitles {
+        font-size: 3.5rem;
+        color: #CBBAA1;
+        margin: 0;
+        padding-top: 0rem;
+    }
+
+    .homeLink h3 {
+        max-width: 90vw;
+    }
+}
+
+@media (max-width: 500px) {
+    .gridContainer {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+@media (max-width: 425px) {
+    .header {
+        height: 63vh;
+    }
+}
+
+@media (max-width: 320px) {
+    .header {
+        height: 58vh;
+    }
+
+    .header h1 {
+        font-size: 2.5rem;
+    }
+
+    .headerContainer {
+        padding: 2rem;
+    }
+
+    .contentTitles {
+        font-size: 3rem;
+        padding-top: 0rem;
+    }
+
+    .p2textContainer {
+        width: 90%;
+        font-size: 1rem;
+        line-height: 1.8rem;
+    }
+
+    .headerText {
+        max-width: 100%;
+        padding-top: .5rem;
+        line-height: 1.8rem;
+    }
+
+    .p2 {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+    }
+
+    .homeLink h3 {
+        font-size: 2rem;
+        padding-top: 1rem;
+        padding-bottom: 2rem;
     }
 }

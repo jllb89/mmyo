@@ -1,5 +1,5 @@
 {
-  "name": "first-stop",
+  "name": "mmyo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "formidable": "^3.5.1",
     "i18next": "^23.11.5",
     "i18next-resources-to-backend": "^1.2.1",
     "next": "^14.2.3",
     "next-i18n-router": "^5.4.3",
+    "nodemailer": "^6.9.14",
     "punycode": "^2.3.1",
+    "raw-body": "^3.0.0",
     "react": "^18",
     "react-dom": "^18",
     "react-i18next": "^14.1.2"

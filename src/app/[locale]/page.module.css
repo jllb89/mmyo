@@ -98,6 +98,11 @@
   width: 60%;
 }
 
+.highlight {
+  font-weight: 400;
+}
+
+
 .p2 {
   display: flex;
   justify-content: flex-end;
@@ -120,8 +125,8 @@
 
 .homeTitle h3 {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;
-  font-size: 4rem;
+  font-weight: 200;
+  font-size: 3.5rem;
   color: #535E6B;
   margin: 0;
 }
@@ -138,12 +143,188 @@
 
 .homeLink h3 {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;
-  font-size: 4rem;
+  font-weight: 200;
+  font-size: 3.5rem;
   color: #535E6B;
   margin: 0;
-  text-decoration: underline;
+  text-decoration: none;
   padding-top: 6rem;
   padding-bottom: 14rem;
   cursor: pointer;
+  position: relative;
+  display: inline-block;
+}
+
+.homeLink h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 12rem; /* Adjust this value to control how close the underline is to the text */
+  width: 100%;
+  height: 2px; /* Adjust the thickness of the underline */
+  background-color: currentColor; /* Uses the current text color */
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0; /* Start with the underline hidden */
+}
+
+.homeLink h3:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+  opacity: 1; /* Fade the underline in */
+}
+
+@media (max-width: 1200px) {
+  .logoContainer img {
+    width: 250px !important;
+    height: 339px !important;
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .header h1 {
+    width: 90vw;
+  }
+
+  .buttonContainer {
+    width: 80vw;
+    transform: translateX(30%);
+  }
+
+  .p1 {
+    transform: translateY(-60%);
+    padding-left: 1rem;
+  }
+
+  .p1 h2 {
+    font-size: 1.2rem;
+    line-height: 2rem;
+  }
+
+  .homeTitle h3 {
+    font-weight: 200;
+    font-size: 3rem;
+    transform: translateY(-170%);
+
+  }
+
+  .horizontalLine {
+    width: 200px;
+    height: 5px;
+    background-color: #CBBAA1;
+    border: none;
+    margin-top: 6rem;
+  }
+
+  .p2 {
+    padding-top: 5rem;
+    padding-bottom: 0;
+    transform: translateY(-20%);
+  }
+  
+  .p2 h2 {
+    font-size: 1.2rem;
+    line-height: 2rem;
+  }
+
+  .textContainer {
+    width: 90%;
+  }
+
+  .p2textContainer {
+    width: 90%;
+  }
+
+  .horizontalLine {
+    margin-bottom: 4rem;
+  }
+
+  .homeLink h3 {
+    font-weight: 200;
+    font-size: 3rem;
+    text-decoration: none;
+    padding-top: 0;
+    padding-bottom: 6rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .homeLink h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 5rem; /* Adjust this value to control how close the underline is to the text */
+    width: 100%;
+    height: 2px; /* Adjust the thickness of the underline */
+    background-color: currentColor; /* Uses the current text color */
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0; /* Start with the underline hidden */
+  }
+  
+  .homeLink h3:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+    opacity: 1; /* Fade the underline in */
+  }
+  
+}
+
+@media (max-width: 450px) {
+
+
+  .textContainer {
+    width: 90%;
+    
+  }
+
+  .header h1 {
+    font-size: 2rem;
+    text-align: right;
+  }
+
+  .header {
+    height: 60vh;
+  }
+
+  .logoContainer {
+    transform: translateY(-60%);
+  }
+
+  .p1 h2 {
+    font-size: 1.2rem;
+    line-height: 2rem;
+  }
+
+  .horizontalLine {
+    width: 120px;
+    height: 5px;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+  }
+
+  .homeTitle h3 {
+    font-size: 2.5rem;
+    margin-top: -8rem;
+  }
+
+  .p2 h2 {
+    font-size: 1.2rem;
+    line-height: 2rem;
+  }
+
+  .homeLink h3 {
+    font-weight: 100;
+    font-size: 2.5rem;
+    padding-top: 2rem;
+    padding-bottom: 8rem;
+  }
+
+  .homeContent {
+    padding: 1rem;
+  }
 }

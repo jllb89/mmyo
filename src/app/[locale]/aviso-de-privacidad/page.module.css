@@ -33,7 +33,7 @@
 }
 
 .textLine {
-    padding-left: 50%; /* Adjust as necessary */
+    padding-left: 50%;
     padding-bottom: 1rem;
 }
 
@@ -55,4 +55,30 @@
     font-weight: 200;
     font-size: 1rem;
     text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+
+    .content {
+        padding-bottom: 1rem;
+    }
+
+    .texts {
+        padding-top: 12rem;
+        padding-right: 1rem;
+    }
+
+    .texts h1 {
+        font-size: 2.5rem;
+        padding-bottom: 4rem;
+        padding-left: 1rem;
+        max-width: 90%;
+        line-height: 0;
+    }
+    
+    .textLine {
+        padding-left: 15%;
+        padding-bottom: 1rem;
+    }
+
 }

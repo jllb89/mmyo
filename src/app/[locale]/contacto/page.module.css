@@ -32,7 +32,7 @@
 .pageText {
     max-width: 30vw;
     text-align: left;
-    padding-left: 1rem; /* Ensuring alignment with the h1 */
+    padding-left: 1rem;
 }
 
 .texts p {
@@ -51,13 +51,13 @@
 }
 
 .contactColumn {
-    flex: 0 0 auto; /* Prevent columns from growing and ensure they only take up the necessary space */
+    flex: 0 0 auto;
     padding: 0 1rem;
-    margin-right: 2rem; /* Add margin to separate the columns */
+    margin-right: 2rem; 
 }
 
 .contactColumn:last-child {
-    margin-right: 0; /* Remove margin from the last column */
+    margin-right: 0;
 }
 
 .contactColumn h2 {
@@ -90,4 +90,39 @@
     display: flex;
     justify-content: flex-end;
     width: 100%;
+}
+
+
+@media (max-width: 900px) {
+    .texts h1 {
+        font-size: 2.5rem;
+    }
+
+    .pageText {
+        max-width: 89vw;
+        padding-left: 0;
+        padding-bottom: 0;
+    }
+
+    .formWrapper {
+        justify-content: center;
+    }
+
+    .contactData {
+        flex-direction: column;
+        padding-left: 3rem; 
+    }
+
+    .contactColumn {
+        padding: 4;
+        margin-bottom: 0;
+    }
+
+    .contactColumn:last-child {
+        margin-bottom: 0;
+    }
+
+    .formWrapper {
+        margin-top: -5rem;
+    }
 }

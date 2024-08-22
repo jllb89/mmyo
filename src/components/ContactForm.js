@@ -9,36 +9,53 @@ export default function ContactForm() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        phone: '',
         message: ''
     });
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState('');
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        if (name === 'resume') {
-            setFormData({
-                ...formData,
-                resume: files[0]
-            });
-        } else {
-            setFormData({
-                ...formData,
-                [name]: value
-            });
-        }
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.name && formData.email && formData.phone && formData.resume && formData.about) {
-            setError('');
-            setSubmitted(true);
+
+        console.log('Submitting form data:', formData);
+
+        if (formData.name && formData.email && formData.message) {
+            try {
+                const response = await fetch('/api/contact-form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });                
+
+                if (response.ok) {
+                    console.log('Email sent successfully');
+                    setError('');
+                    setSubmitted(true);
+                } else {
+                    const errorData = await response.json();
+                    console.error('Server error:', errorData);
+                    setError(`Error: ${errorData.error || t('invalid-input')}`);
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                setError(`Error: ${error.message || t('invalid-input')}`);
+            }
         } else {
+            console.warn('Form validation failed');
             setError(t('invalid-input'));
         }
     };
+
 
     return (
         <div className={styles.applicationForm}>

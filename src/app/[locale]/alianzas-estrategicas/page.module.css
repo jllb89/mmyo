@@ -54,3 +54,18 @@
     font-size: 1rem;
     text-decoration: underline;
 }
+
+@media (max-width: 900px) {
+
+    .texts p {
+        padding-left: 4rem;
+        padding-bottom: 2rem;
+    }
+
+    .texts ul {
+        padding-left: 6rem;
+        line-height: 170%;
+        padding-right: 1rem;
+    }
+
+}

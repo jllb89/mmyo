@@ -26,7 +26,6 @@
 .footerRow {
     display: flex;
     justify-content: space-between;
-    margin-top: 2rem;
 }
 
 .footerColumn50 {
@@ -103,7 +102,17 @@
 }
 
 .footerColumn50email p {
+    color: #535E6B; /* Custom color */
     text-decoration: underline;
+}
+
+.footerColumn50email p a {
+    color: inherit; /* Use the same color as the parent element */
+    text-decoration: none; /* Remove underline */
+}
+
+.footerColumn50email p a:hover {
+    text-decoration: underline; /* Add underline on hover if desired */
 }
 
 .lastFooterRow {
@@ -116,4 +125,56 @@
     font-family: 'Inter', sans-serif;
     font-weight: 300;
     font-size: .7rem;
+}
+
+/* Media query for screens up to 900px */
+@media (max-width: 900px) {
+
+    .footer {
+        height: auto;
+    }
+
+
+    .footerRow {
+        flex-direction: column;
+    }
+
+    .footerColumn50 {
+        width: 100%;
+    }
+
+    .footerColumn25 {
+        width: auto;
+    }
+
+    .hideOnMobile {
+        display: none;
+    }
+}
+
+
+@media (max-width: 400px) {
+    .footerColumn50 p {
+        font-size: 1.5rem;
+    }
+
+    .footerColumn50email {
+        transform: translateY(20%);
+    }
+
+    .footerColumn50email p {
+        font-size: 1.5rem;
+    }
+
+    .footer h3 {
+        font-size: 1rem;
+    }
+
+    .address {
+        font-size: 1rem;
+    }
+
+    .footerLegal {
+        font-size: .6rem;
+    }
 }

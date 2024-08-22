@@ -29,6 +29,7 @@
     font-size: 3rem;
     text-align: left;
     margin: 0;
+    word-wrap: break-word; /* Ensure text wraps if necessary */
 }
 
 .inputContainer {
@@ -82,7 +83,7 @@
 }
 
 .error {
-    color: rgb(243, 48, 48);
+    color: rgb(127, 27, 27);
     font-family: 'Inter', sans-serif;
     font-weight: 200;
     font-size: 1rem;
@@ -109,5 +110,63 @@
     }
     to {
         opacity: 1;
+    }
+}
+
+@media (max-width: 1200px) {
+    .mailingForm {
+        height: 45vh;
+        background-position: right;
+    }
+
+    .form h2 {
+        font-size: 2.5rem;
+    }
+}
+
+
+@media (max-width: 650px) {
+    .inputContainer {
+        width: 90%;
+    }
+
+    .input {
+        max-width: 90%;
+    }
+
+    .form {
+        max-width: 95vw;
+    }
+}
+
+
+@media (max-width: 425px) {
+    .form h2 {
+        font-size: 1.8rem;
+    }
+
+    .error {
+        font-family: 'Inter', sans-serif;
+        font-weight: 300;
+        font-size: .8rem;
+        margin-top: 1.2rem;
+    }
+    
+    .confirmation {
+        font-size: 1.2rem;
+    }
+
+    .input {
+        font-size: 1rem;
+        padding: 1.2rem 0;
+        max-width: 90%;
+    }
+
+    .input::placeholder {
+        font-size: 1rem;
+    }
+
+    .inputContainer {
+        width: 90%;
     }
 }

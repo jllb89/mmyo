@@ -47,6 +47,7 @@
   font-size: 1.5rem;
   cursor: pointer;
   align-self: flex-end;
+  color: #CBBAA1;
 }
 
 .linksWrapper {
@@ -89,7 +90,7 @@
 .subLink {
   display: block;
   padding: 0.5rem 0;
-  color: #535E6B; /* Ensuring sublink color is #535E6B */
+  color: #535E6B;
   text-decoration: none;
   padding-bottom: .8rem;
 }
@@ -174,8 +175,7 @@
     justify-content: space-between;
     width: 100%;
     align-items: center;
-/*     z-index: 1001;
- */  }
+  }
 
   .linkWrapper {
     width: 100%;
@@ -211,5 +211,12 @@
 
   .subLink:hover {
     text-decoration: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .navbarLogo {
+    width: 200px;
+    height: 40px;
   }
 }

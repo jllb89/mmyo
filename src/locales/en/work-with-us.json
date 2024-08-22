@@ -6,5 +6,7 @@
     "form-field-name-3": "Attach your CV",
     "form-field-name-4": "tell us about yourself ",
     "header": "WORK WITH US",
-    "text": "At Muñoz Manzo y Ocampo, we value talent and dedication. If you are interested in joining our team, we invite you to complete the following form and attach your CV. We will review your application carefully and consider the possibility of future collaboration."
+    "text": "At Muñoz Manzo y Ocampo, we value talent and dedication. If you are interested in joining our team, we invite you to complete the following form and attach your CV. We will review your application carefully and consider the possibility of future collaboration.",
+    "confirmation": "Your request has been sent successfully. We will contact you shortly.",
+    "sending": "Sending request..."
 }

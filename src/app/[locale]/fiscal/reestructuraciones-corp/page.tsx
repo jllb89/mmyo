@@ -37,7 +37,7 @@ export default async function Home({ params: { locale } }: { params: { locale: s
               <div className={`${styles.linkWrapper} ${styles.rightAlign}`}>
                 <Link href="/fiscal/asesoria-alianzas" className={styles.serviceLink}>{t('siguiente-servicio')}
                 </Link>
-                <p className={styles.linkTitle2}>{t('navbar:asesoria-alianza')}</p>
+                <p className={styles.linkTitle2}>{t('navbar:asesoria-alianzas')}</p>
               </div>
             </div>
           </div>

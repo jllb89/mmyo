@@ -122,7 +122,7 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
           ☰
         </button>
         <div className={`${styles.linksWrapper} ${menuOpen ? styles.open : ''}`}>
-          <button className={styles.closeButton} onClick={() => setMenuOpen(false)} style={{ color: linkColor }}>
+          <button className={styles.closeButton} onClick={() => setMenuOpen(false)}>
             ✕
           </button>
           <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>

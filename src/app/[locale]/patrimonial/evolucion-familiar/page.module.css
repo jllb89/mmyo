@@ -109,3 +109,51 @@
 .rightAlign {
     text-align: right;
 }
+
+@media (max-width: 900px) {
+
+    .content {
+        padding-top: 6rem;
+        padding-bottom: 4rem;
+    }
+
+    .texts {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .texts h1 {
+        font-size: 2.5rem;
+        max-width: 80%;
+        padding-left: 2rem;
+        padding-bottom: 2rem;
+        line-height: 3rem;
+    }
+
+    .textLine {
+        padding-left: 5rem;
+        padding-right: 1rem;
+        padding-bottom: 0;
+    }
+
+    .linkContainer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .content {
+        padding-top: 6rem;
+        padding-bottom: 4rem;
+    }
+
+    .texts {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}
