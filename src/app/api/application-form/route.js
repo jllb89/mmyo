@@ -1,18 +1,12 @@
 import nodemailer from 'nodemailer';
-import fs from 'fs/promises';
 
-export const routeSegmentConfig = {
-  api: {
-    bodyParser: false, // Disable Next.js's default body parsing
-  },
-};
-
+export const runtime = 'node'; // Use Node.js runtime instead of Edge
 
 export async function POST(req) {
   try {
     const form = new FormData();
-    await req.formData().then(data => {
-        data.forEach((value, key) => form.append(key, value));
+    await req.formData().then((data) => {
+      data.forEach((value, key) => form.append(key, value));
     });
 
     const name = form.get('name');
