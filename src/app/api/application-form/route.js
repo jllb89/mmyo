@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export const runtime = 'node'; // Use Node.js runtime instead of Edge
+export const runtime = 'nodejs'; // Use Node.js runtime instead of Edge
 
 export async function POST(req) {
   try {
