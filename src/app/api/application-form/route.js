@@ -1,11 +1,12 @@
 import nodemailer from 'nodemailer';
 import fs from 'fs/promises';
 
-export const config = {
+export const routeSegmentConfig = {
   api: {
-    bodyParser: false, // Disable body parsing for file uploads
+    bodyParser: false, // Disable Next.js's default body parsing
   },
 };
+
 
 export async function POST(req) {
   try {
