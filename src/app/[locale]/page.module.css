@@ -23,6 +23,8 @@
   max-width: 1200px;
   width: 100%;
   padding: 0 2rem;
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
 }
 
 .header h1 {
@@ -72,18 +74,24 @@
   max-width: 1200px;
   width: 100%;
   margin: auto;
-  transform: translateY(-50%);
+  transform: translateY(-60%);
+  opacity: 0;
+  animation: fadeIn 2.5s ease-in forwards;
+  background-color: transparent;
 }
 
+/* Removed padding and background from .homeContent */
 .homeContent {
+  z-index: 10;
+  position: relative;
+  transform: translateY(-10%);
+}
+
+/* New inner container to maintain padding for text content */
+.homeContentInner {
   max-width: 1200px;
   margin: auto;
   padding: 2rem;
-}
-
-.p1 {
-  transform: translateY(-50%);
-  padding-left: 8rem;
 }
 
 .p1 h2 {
@@ -101,7 +109,6 @@
 .highlight {
   font-weight: 400;
 }
-
 
 .p2 {
   display: flex;
@@ -137,6 +144,7 @@
   background-color: #CBBAA1;
   border: none;
   margin-top: 8rem;
+  margin-bottom: 8rem;
   align-self: flex-start;
   margin-left: 0;
 }
@@ -149,7 +157,7 @@
   margin: 0;
   text-decoration: none;
   padding-top: 6rem;
-  padding-bottom: 14rem;
+  padding-bottom: 6rem;
   cursor: pointer;
   position: relative;
   display: inline-block;
@@ -159,20 +167,37 @@
   content: '';
   position: absolute;
   left: 0;
-  bottom: 12rem; /* Adjust this value to control how close the underline is to the text */
+  bottom: 4rem;
   width: 100%;
-  height: 2px; /* Adjust the thickness of the underline */
-  background-color: currentColor; /* Uses the current text color */
+  height: 2px;
+  background-color: currentColor;
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  opacity: 0; /* Start with the underline hidden */
+  opacity: 0;
 }
 
 .homeLink h3:hover::after {
   transform: scaleX(1);
   transform-origin: left;
-  opacity: 1; /* Fade the underline in */
+  opacity: 1;
+}
+
+.fadeInOnScroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1s ease-in, transform 1s ease-in;
+}
+
+.fadeInOnScroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 1200px) {
@@ -182,9 +207,7 @@
   }
 }
 
-
 @media (max-width: 900px) {
-
   .header h1 {
     width: 90vw;
   }
@@ -207,8 +230,8 @@
   .homeTitle h3 {
     font-weight: 200;
     font-size: 3rem;
-    transform: translateY(-170%);
-
+    transform: translateY(-140%);
+    padding-left: 0;
   }
 
   .horizontalLine {
@@ -220,11 +243,11 @@
   }
 
   .p2 {
-    padding-top: 5rem;
-    padding-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 2rem;
     transform: translateY(-20%);
   }
-  
+
   .p2 h2 {
     font-size: 1.2rem;
     line-height: 2rem;
@@ -245,41 +268,15 @@
   .homeLink h3 {
     font-weight: 200;
     font-size: 3rem;
-    text-decoration: none;
     padding-top: 0;
     padding-bottom: 6rem;
-    position: relative;
-    display: inline-block;
   }
-  
-  .homeLink h3::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 5rem; /* Adjust this value to control how close the underline is to the text */
-    width: 100%;
-    height: 2px; /* Adjust the thickness of the underline */
-    background-color: currentColor; /* Uses the current text color */
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    opacity: 0; /* Start with the underline hidden */
-  }
-  
-  .homeLink h3:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-    opacity: 1; /* Fade the underline in */
-  }
-  
+
 }
 
 @media (max-width: 450px) {
-
-
   .textContainer {
     width: 90%;
-    
   }
 
   .header h1 {
@@ -318,13 +315,12 @@
   }
 
   .homeLink h3 {
-    font-weight: 100;
     font-size: 2.5rem;
     padding-top: 2rem;
     padding-bottom: 8rem;
   }
 
-  .homeContent {
+  .homeContentInner {
     padding: 1rem;
   }
 }

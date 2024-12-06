@@ -13,6 +13,8 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState(null);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false); // Added state for scroll
+  const [isVisible, setIsVisible] = useState(false); // State for fade-in effect
   const { i18n } = useTranslation();
   const currentLocale = i18n.language;
   const router = useRouter();
@@ -28,10 +30,23 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
       }
     };
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0); // Update isScrolled based on scroll position
+    };
 
-    return () => window.removeEventListener('resize', handleResize);
+    handleResize();
+    handleScroll(); // Initialize isScrolled on component mount
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleScroll); // Add scroll event listener
+
+    // Set isVisible to true to trigger fade-in effect
+    setIsVisible(true); // Added line
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleScroll); // Clean up
+    };
   }, []);
 
   const handleChange = (newLocale) => {
@@ -110,8 +125,24 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
 
   const getSubMenuClass = (subLinks) => subLinks.length > 8 ? `${styles.subMenu} ${styles.twoColumn}` : styles.subMenu;
 
+  // Function to get the opposite color
+  const getOppositeColor = (color) => {
+    if (color.toLowerCase() === '#cbbaa1') {
+      return '#535E6B';
+    } else if (color.toLowerCase() === '#535e6b') {
+      return '#CBBAA1';
+    } else {
+      // If color is neither of the two, default to 'transparent' or another fallback color
+      return 'transparent';
+    }
+  };
+
+  const backgroundColor = isScrolled ? getOppositeColor(linkColor) : 'transparent'; // Set background color based on scroll
+
+
   return (
-    <div className={styles.navbarContainer}>
+    <div
+      className={`${styles.navbarContainer} ${isVisible ? styles.navbarVisible : ''}`} style={{ backgroundColor }}>{/* Apply backgroundColor */}
       <nav className={styles.navbar}>
         <div className={styles.logoWrapper}>
           <Link href="/">
