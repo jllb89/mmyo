@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './page.module.css';
 import initTranslations from '../../i18n';
 import TranslationsProvider from '../../../components/TranslationsProvider';
@@ -9,15 +10,37 @@ import Footer from '../../../components/Footer';
 const i18nNamespaces = ['servicios-fiscales', 'common'];
 
 export default async function Home({ params: { locale } }: { params: { locale: string } }) {
-  const { t, resources } = await initTranslations(locale, ['servicios-fiscales', 'common', 'navbar', 'mailing-list', 'footer']);
+  const { t, resources } = await initTranslations(locale, [
+    'servicios-fiscales',
+    'common',
+    'navbar',
+    'mailing-list',
+    'footer'
+  ]);
+
   return (
     <TranslationsProvider
       resources={resources}
       locale={locale}
-      namespaces={i18nNamespaces}>
+      namespaces={i18nNamespaces}
+    >
       <main className={styles.main}>
         <Navbar />
         <div className={styles.content}>
+          <Image
+            src="/svg/l2.svg"
+            alt="Top Right Decoration"
+            width={1100}
+            height={1100}
+            className={styles.topRightImg}
+          />
+          <Image
+            src="/svg/logo3.svg"
+            alt="Bottom Left Decoration"
+            width={300}
+            height={300}
+            className={styles.bottomLeftImg}
+          />
           <div className={styles.texts}>
             <h1>{t('header')}</h1>
             <p>{t('text')}</p>

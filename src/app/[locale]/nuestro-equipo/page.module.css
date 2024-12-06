@@ -9,20 +9,25 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    height: 65vh;
+    height: 50vh;
     background-color: #CBBAA1;
     background-size: cover;
     background-position: center;
+    background-image: url('/images/equipo.webp');
 }
 
+/* Animate the headerContainer with fadeInUp */
 .headerContainer {
     background-color: #535E6B;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    max-width: 1000px;
+    max-width: 900px;
     width: 100%;
     padding: 4rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-in forwards;
 }
 
 .header h1 {
@@ -31,9 +36,9 @@
     font-weight: 300;
     font-size: 4rem;
     text-align: left;
-    width: 70vw;
+    width: 100vw;
     margin: 0;
-    max-width: 10vw;
+    max-width: 40vw;
 }
 
 .buttonContainer {
@@ -66,16 +71,6 @@
     position: relative;
 }
 
-.logoContainer {
-    display: flex;
-    justify-content: flex-end;
-    max-width: 1200px;
-    width: 100%;
-    margin: auto;
-    transform: translateY(-70%);
-    margin-bottom: -30rem;
-}
-
 .homeContent {
     max-width: 1200px;
     margin: auto;
@@ -89,7 +84,7 @@
     font-size: 1rem;
     color: #ffffff;
     line-height: 2.2rem;
-    max-width: 55%;
+    max-width: 100%;
     padding-top: 2rem;
     line-height: 2rem;
 }
@@ -134,11 +129,11 @@
     font-size: 4rem;
     color: #535E6B;
     margin: 0;
-    padding-bottom: -10rem;
+    padding-top: 4rem;
 }
 
 .horizontalLine {
-    width: 50%;
+    width: 100%;
     height: .5px;
     background-color: #ffffff90;
     border: none;
@@ -169,10 +164,34 @@
     padding-top: 2rem;
 }
 
+.imageContainer {
+    position: relative; 
+    width: 100%;
+    height: auto;
+}
+
+/* Background image behind everything else */
+.bgImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+    z-index: 0; /* behind teamGrid */
+    opacity: .4;
+}
+
+/* teamGrid above the bgImage */
 .teamGrid {
+    position: relative;
+    z-index: 1;
     max-width: 1200px;
     margin: auto;
     padding-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-in forwards 0.5s;
 }
 
 .gridContainer {
@@ -188,7 +207,7 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    align-items: left;
+    align-items: flex-start;
 }
 
 .name {
@@ -220,52 +239,43 @@
     text-decoration: underline;
 }
 
+/* .imageWrapper: show on hover */
 .imageWrapper {
-    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 10px); /* Start slightly below */
+    opacity: 0;
+    transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+    max-width: 200px;
     width: 100%;
+    z-index: 2; /* Above teamGrid and bgImage */
     text-align: left;
     margin-top: 10px;
-    opacity: 0;
-    transform: translateY(-10px);
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
 }
 
-.gridItem:hover .imageWrapper,
-.gridItem.clicked .imageWrapper {
-    display: block;
-    animation-name: fadeInSlideUp;
-}
-
-.gridItem.clicked .imageWrapper {
-    animation-name: fadeOutSlideDown;
+.gridItem:hover .imageWrapper {
+    opacity: 1;
+    transform: translate(-82%, 100%); /* Move image up by 10px */
+    z-index: 3;
 }
 
 .image {
     width: 100%;
     max-width: 200px;
     height: auto;
+    z-index: 4;
 }
 
-@keyframes fadeInSlideUp {
-    from {
+/* Keyframes for fadeInUp animation */
+@keyframes fadeInUp {
+    0% {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
     }
-    to {
+    100% {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes fadeOutSlideDown {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(10px);
     }
 }
 
@@ -277,17 +287,20 @@
 
     .headerContainer {
         background-color: #535E6B;
-        max-width: 700px;
+                
     }
 
-    .logoContainer {
-        display: flex;
-        justify-content: flex-end;
-        max-width: 1200px;
-        width: 100%;
-        margin: auto;
-        transform: translateY(-80%);
-        margin-bottom: -30rem;
+    .header h1 {
+        font-size: 3rem;
+        text-align: left;
+        max-width: 90vw;
+    }
+
+    .headerText {
+        font-size: 1rem;
+        line-height: 2rem;
+        padding-top: 1.5rem;
+        line-height: 1.5rem;
     }
 }
 
@@ -296,21 +309,22 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .imageWrapper {
-        display: none;
+    .header h1 {
+        font-size: 2rem;
+        text-align: left;
+        max-width: 90vw;
     }
 
-    .gridItem.clicked .imageWrapper {
-        display: block;
+    .homeTitle h3 {
+        font-size: 3rem;
+        padding-top: 4rem;
+        padding-left: 1rem;
     }
 }
 
-
-
 @media (max-width: 900px) {
-
     .headerContainer {
-        max-width: 500px;
+        max-width: 80%;
     }
 
     .logoContainer {
@@ -344,26 +358,49 @@
     .gridContainer {
         grid-template-columns: repeat(1, 1fr);
     }
-}
 
+    .horizontalLine {
+        margin-top: 1rem;
+    }
+}
 
 @media (max-width: 425px) {
     .header {
-        height: 63vh;
-    }
-}
-
-@media (max-width: 320px) {
-    .header {
-        height: 58vh;
-    }
-
-    .header h1 {
-        font-size: 2.5rem;
+        height: 55vh;
     }
 
     .headerContainer {
-        padding: 2rem;
+        padding: 1rem;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .headerText {
+        font-size: .8rem;
+        line-height: 1.2rem;
+        padding-top: 1.5rem;
+        line-height: 1.5rem;
+    }
+
+    
+}
+
+@media (max-width: 320px) {
+
+    .header {
+        height: 65vh;
+    }
+
+    .headerText {
+        line-height: 1.2rem;
+        padding-top: 1rem;
+        line-height: 1.2rem;
+    }
+
+    .headerContainer {
+        padding: .5rem;
     }
 
     .contentTitles {
@@ -374,12 +411,6 @@
     .p2textContainer {
         width: 90%;
         font-size: 1rem;
-        line-height: 1.8rem;
-    }
-
-    .headerText {
-        max-width: 100%;
-        padding-top: .5rem;
         line-height: 1.8rem;
     }
 

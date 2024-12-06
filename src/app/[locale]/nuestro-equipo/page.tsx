@@ -11,7 +11,14 @@ import Image from 'next/image';
 const i18nNamespaces = ['nuestro-equipo', 'common'];
 
 export default async function Home({ params: { locale } }: { params: { locale: string } }) {
-  const { t, resources } = await initTranslations(locale, ['nuestro-equipo', 'common', 'navbar', 'mailing-list', 'footer', 'home']);
+  const { t, resources } = await initTranslations(locale, [
+    'nuestro-equipo',
+    'common',
+    'navbar',
+    'mailing-list',
+    'footer',
+    'home'
+  ]);
 
   const socios = [
     { name: 'Alejo Muñoz Manzo', position: t('socio-fundador'), linkedin: 'https://linkedin.com/in/johndoe', image: '/images/MM.png' },
@@ -37,8 +44,7 @@ export default async function Home({ params: { locale } }: { params: { locale: s
     { name: 'Raúl Iván Martínez González Vega', position: t('asociado'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/raul.webp' },
     { name: 'Ilse Gabriela Moreno López', position: t('asociada-area-patrimonial'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/ilse.webp' },
     { name: 'José Mario Pereda Valdez', position: t('gerente'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/jose.webp' },
-/*     { name: 'Pamela Rodríguez Hernández', position: t('supervisora-consultoria-patrimonial'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/pamela.webp' }
- */  ];
+  ];
 
   const sociosTitle = t("socios");
   const asociadosTitle = t("asociados");
@@ -47,7 +53,8 @@ export default async function Home({ params: { locale } }: { params: { locale: s
     <TranslationsProvider
       resources={resources}
       locale={locale}
-      namespaces={i18nNamespaces}>
+      namespaces={i18nNamespaces}
+    >
       <main className={styles.main}>
         <Navbar linkColor="#535E6B" logoType="logo2.svg" />
         <div className={styles.header}>
@@ -58,15 +65,22 @@ export default async function Home({ params: { locale } }: { params: { locale: s
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <Link href="#your-link" className={styles.headerButton}>{t("button")}</Link>
+          <Link href="#your-link" className={styles.headerButton}>
+            {t("button")}
+          </Link>
         </div>
-        <div className={styles.logo}>
-          <div className={styles.logoContainer}>
-            <Image src="/images/MM.png" alt="MMYO Logo" width={500} height={678} />
+        <div className={styles.imageContainer}>
+          {/* Background image first */}
+          <Image src="/svg/l3.svg" alt="team" width={2000} height={2000} className={styles.bgImage} />
+          {/* teamGrid next so it stacks above the bgImage naturally */}
+          <div className={styles.teamGrid}>
+            <Team
+              socios={socios}
+              asociados={asociados}
+              sociosTitle={sociosTitle}
+              asociadosTitle={asociadosTitle}
+            />
           </div>
-        </div>
-        <div className={styles.teamGrid}>
-        <Team socios={socios} asociados={asociados} sociosTitle={sociosTitle} asociadosTitle={asociadosTitle} />
         </div>
         <MailingList />
         <Footer />
