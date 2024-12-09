@@ -5,8 +5,17 @@ import TranslationsProvider from '../../../../components/TranslationsProvider';
 import Navbar from '../../../../components/Navbar';
 import MailingList from '../../../../components/MailingList';
 import Footer from '../../../../components/Footer';
+import HighlightText from '../../../../components/HighlightText';
 
 const i18nNamespaces = ['dictamenes-y-certificaciones-fiscales', 'common'];
+
+const phrasesToHighlight = [
+  'contadores públicos certificados ante el SAT',
+  'en apego a los requerimientos emitidos por las autoridades fiscales',
+  'Elaboración y emisión de los dictámenes fiscales',
+  'aprovechen su costo fiscal respecto de las acciones vendidas.',
+  'Elaboración y emisión de los dictámenes fiscales relacionados con la venta de acciones efectuada por personas físicas'
+];
 
 export default async function Home({ params: { locale } }: { params: { locale: string } }) {
   const { t, resources } = await initTranslations(locale, ['dictamenes-y-certificaciones-fiscales', 'navbar', 'mailing-list', 'footer']);
@@ -26,7 +35,9 @@ export default async function Home({ params: { locale } }: { params: { locale: s
           <div className={styles.texts}>
             <h1>{t('header')}</h1>
             {textLines.map((line: string, index: number) => (
-              <p key={index} className={styles.textLine}>{line}</p>
+              <p key={index} className={styles.textLine}>
+                <HighlightText text={line} phrases={phrasesToHighlight} />
+              </p>
             ))}
             <div className={styles.linkContainer}>
               <div className={`${styles.linkWrapper} ${styles.leftAlign}`}>
