@@ -5,8 +5,14 @@ import TranslationsProvider from '../../../../components/TranslationsProvider';
 import Navbar from '../../../../components/Navbar';
 import MailingList from '../../../../components/MailingList';
 import Footer from '../../../../components/Footer';
+import HighlightText from '../../../../components/HighlightText';
 
 const i18nNamespaces = ['análisis-preventivo-de-operaciones', 'common'];
+
+const phrasesToHighlight = [
+  'cuenta con los conocimientos y experiencia necesarios',
+  'elementos de soporte en una futura auditoría fiscal.'
+];
 
 export default async function Home({ params: { locale } }: { params: { locale: string } }) {
   const { t, resources } = await initTranslations(locale, ['análisis-preventivo-de-operaciones', 'navbar', 'mailing-list', 'footer']);
@@ -26,12 +32,12 @@ export default async function Home({ params: { locale } }: { params: { locale: s
           <div className={styles.texts}>
             <h1>{t('header')}</h1>
             {textLines.map((line: string, index: number) => (
-              <p key={index} className={styles.textLine}>{line}</p>
+              <p key={index} className={styles.textLine}>
+                <HighlightText text={line} phrases={phrasesToHighlight} />
+              </p>
             ))}
             <div className={styles.linkContainer}>
               <div className={`${styles.linkWrapper} ${styles.leftAlign}`}>
-{/*                 <Link href="/legal/solucion-anticipada-de-controversias" className={styles.serviceLink}>{t('servicio-anterior')}
-                </Link> */}
                 <p className={styles.linkTitle}>{/* {t('navbar:solucion-controversias')} */}</p>
               </div>
               <div className={`${styles.linkWrapper} ${styles.rightAlign}`}>

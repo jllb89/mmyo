@@ -5,8 +5,15 @@ import TranslationsProvider from '../../../../components/TranslationsProvider';
 import Navbar from '../../../../components/Navbar';
 import MailingList from '../../../../components/MailingList';
 import Footer from '../../../../components/Footer';
+import HighlightText from '../../../../components/HighlightText';
 
 const i18nNamespaces = ['acompañamiento-en-la-evolucion-familiar', 'common'];
+
+const phrasesToHighlight = [
+  'se hace necesario contar en todo momento con un acompañamiento fiscal ',
+  'El nivel de confianza que llegamos a desarrollar con nuestros clientes, ',
+  'Nuestra misión es convertirnos en la institución a la que le confíen nuestros clientes'
+];
 
 export default async function Home({ params: { locale } }: { params: { locale: string } }) {
   const { t, resources } = await initTranslations(locale, ['acompañamiento-en-la-evolucion-familiar', 'navbar', 'mailing-list', 'footer']);
@@ -26,12 +33,12 @@ export default async function Home({ params: { locale } }: { params: { locale: s
           <div className={styles.texts}>
             <h1>{t('header')}</h1>
             {textLines.map((line: string, index: number) => (
-              <p key={index} className={styles.textLine}>{line}</p>
+              <p key={index} className={styles.textLine}>
+                <HighlightText text={line} phrases={phrasesToHighlight} />
+              </p>
             ))}
             <div className={styles.linkContainer}>
               <div className={`${styles.linkWrapper} ${styles.leftAlign}`}>
-{/*                 <Link href="/patrimonial/transparency-act" className={styles.serviceLink}>{t('servicio-anterior')}
-                </Link> */}
                 <p className={styles.linkTitle}>{/* {t('navbar:transparency-act')} */}</p>
               </div>
               <div className={`${styles.linkWrapper} ${styles.rightAlign}`}>

@@ -5,8 +5,15 @@ import TranslationsProvider from '../../../../components/TranslationsProvider';
 import Navbar from '../../../../components/Navbar';
 import MailingList from '../../../../components/MailingList';
 import Footer from '../../../../components/Footer';
+import HighlightText from '../../../../components/HighlightText';
 
 const i18nNamespaces = ['planeacion-y-acompañamiento-en-procesos-sucesorios-en-mexico-y-el-extranjero', 'common'];
+
+const phrasesToHighlight = [
+  'resulta fundamental planear con tiempo y de forma adecuada',
+  'contar con la documentación necesaria',
+  'control del patrimonio heredado'
+];
 
 export default async function Home({ params: { locale } }: { params: { locale: string } }) {
   const { t, resources } = await initTranslations(locale, ['planeacion-y-acompañamiento-en-procesos-sucesorios-en-mexico-y-el-extranjero', 'navbar', 'mailing-list', 'footer']);
@@ -26,7 +33,9 @@ export default async function Home({ params: { locale } }: { params: { locale: s
           <div className={styles.texts}>
             <h1>{t('header')}</h1>
             {textLines.map((line: string, index: number) => (
-              <p key={index} className={styles.textLine}>{line}</p>
+              <p key={index} className={styles.textLine}>
+                <HighlightText text={line} phrases={phrasesToHighlight} />
+              </p>
             ))}
             <div className={styles.linkContainer}>
               <div className={`${styles.linkWrapper} ${styles.leftAlign}`}>

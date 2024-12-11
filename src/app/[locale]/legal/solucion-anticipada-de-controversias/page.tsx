@@ -5,8 +5,14 @@ import TranslationsProvider from '../../../../components/TranslationsProvider';
 import Navbar from '../../../../components/Navbar';
 import MailingList from '../../../../components/MailingList';
 import Footer from '../../../../components/Footer';
+import HighlightText from '../../../../components/HighlightText';
 
 const i18nNamespaces = ['solución-anticipada-de-controversias', 'common'];
+
+const phrasesToHighlight = [
+  'es posible concluir anticipadamente las facultades de comprobación',
+  'Nuestro equipo de abogados cuenta con la experiencia y las capacidades de negociación '
+];
 
 export default async function Home({ params: { locale } }: { params: { locale: string } }) {
   const { t, resources } = await initTranslations(locale, ['solución-anticipada-de-controversias', 'navbar', 'mailing-list', 'footer']);
@@ -26,7 +32,9 @@ export default async function Home({ params: { locale } }: { params: { locale: s
           <div className={styles.texts}>
             <h1>{t('header')}</h1>
             {textLines.map((line: string, index: number) => (
-              <p key={index} className={styles.textLine}>{line}</p>
+              <p key={index} className={styles.textLine}>
+                <HighlightText text={line} phrases={phrasesToHighlight} />
+              </p>
             ))}
             <div className={styles.linkContainer}>
               <div className={`${styles.linkWrapper} ${styles.leftAlign}`}>
@@ -35,8 +43,6 @@ export default async function Home({ params: { locale } }: { params: { locale: s
                 <p className={styles.linkTitle}>{t('navbar:litigio-constitucional')}</p>
               </div>
               <div className={`${styles.linkWrapper} ${styles.rightAlign}`}>
-{/*                 <Link href="/legal/analisis-preventivo" className={styles.serviceLink}>{t('siguiente-servicio')}
-                </Link> */}
                 <p className={styles.linkTitle2}>{/* {t('navbar:analisis-preventivo')} */}</p>
               </div>
             </div>
