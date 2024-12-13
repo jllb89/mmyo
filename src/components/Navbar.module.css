@@ -8,12 +8,12 @@
   position: fixed;
   top: 0;
   z-index: 1000;
-  opacity: 0; /* Start with opacity 0 */
-  transition: opacity 1s ease, background-color 0.3s ease; /* Added opacity transition */
+  opacity: 0;
+  transition: opacity 1s ease, background-color 0.3s ease;
 }
 
 .navbarVisible {
-  opacity: 1; /* Fade in to opacity 1 */
+  opacity: 1;
 }
 
 .navbar {
@@ -51,23 +51,24 @@
   background: none;
   border: none;
   font-size: 1.5rem;
-  cursor: pointer;
   align-self: flex-end;
   color: #CBBAA1;
+  cursor: pointer;
 }
 
 .linksWrapper {
   display: flex;
   align-items: center;
   gap: 3rem;
+  cursor: pointer;
 }
 
 .linkWrapper {
   position: relative;
+  cursor: pointer;
 }
 
 .subMenu {
-  display: none;
   position: absolute;
   top: 100%;
   left: 0;
@@ -78,6 +79,11 @@
   white-space: nowrap;
   padding: 2.5rem;
   box-sizing: border-box;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .subMenuHeader {
@@ -90,25 +96,74 @@
   width: 100%;
   height: 1px;
   background-color: #535E6B;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
-.subLink {
+.subMenu .subLink {
   display: block;
-  padding: 0.5rem 0;
-  color: #535E6B;
-  text-decoration: none;
-  padding-bottom: .8rem;
-}
-
-.subLink:hover {
-  text-decoration: underline;
+  margin-bottom: 1rem;
+  opacity: 0;
+  transition: opacity 0.2s ease 0.3s;
 }
 
 .hoverEffect:hover .subMenu {
-  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
+.hoverEffect:hover .subMenu .subLink {
+  opacity: 1;
+}
+
+/* subLink: container for text and icon */
+.subLink {
+  color: #535E6B;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* Small gap between text and icon */
+}
+
+.subLinkText {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+  font-weight: 200;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* Underline only under subLinkText */
+.subLinkText::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s ease;
+}
+
+.subLink:hover .subLinkText::before {
+  transform: scaleX(1);
+}
+
+/* Icon next to text, not underlined */
+.subLinkIcon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  padding-left: .5rem;
+}
+
+/* Language switcher */
 .button {
   background-color: transparent;
   border: none;
@@ -137,7 +192,7 @@
   gap: 0.5rem;
 }
 
-/* Responsive Styles */
+/* Responsive */
 @media (max-width: 1200px) {
   .navbar {
     flex-direction: row;
@@ -187,32 +242,43 @@
     width: 100%;
   }
 
+  /* On mobile, submenus should be hidden by default and only shown when open */
   .subMenu {
-    display: none;
     position: static;
     box-shadow: none;
     padding-left: 2rem;
     background-color: transparent;
     color: #CBBAA1;
+    opacity: 0;
+    transform: none;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: none; /* hidden by default */
   }
 
   .subMenu.open {
     display: block;
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  .link {
-    width: 100%;
-    font-size: 1.3rem;
-  }
-
-  .link:hover {
-    text-decoration: none;
+  .subMenu .subLink {
+    display: block;
+    opacity: 1; /* shown when .open is applied */
+    margin-bottom: 1rem;
   }
 
   .subLink {
     color: #CBBAA1;
     font-size: 1rem;
-    padding-bottom: 1.1rem;
+  }
+
+  .subLinkText::before {
+    content: none;
+  }
+
+  .subLinkIcon {
+    display: none; /* or keep it if you want */
   }
 
   .subLink:hover {

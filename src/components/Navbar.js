@@ -13,8 +13,8 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState(null);
   const [isMobileView, setIsMobileView] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false); // Added state for scroll
-  const [isVisible, setIsVisible] = useState(false); // State for fade-in effect
+  const [isScrolled, setIsScrolled] = useState(false); 
+  const [isVisible, setIsVisible] = useState(false); 
   const { i18n } = useTranslation();
   const currentLocale = i18n.language;
   const router = useRouter();
@@ -31,21 +31,20 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
     };
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0); // Update isScrolled based on scroll position
+      setIsScrolled(window.scrollY > 0);
     };
 
     handleResize();
-    handleScroll(); // Initialize isScrolled on component mount
+    handleScroll(); 
 
     window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleScroll); // Add scroll event listener
+    window.addEventListener('scroll', handleScroll); 
 
-    // Set isVisible to true to trigger fade-in effect
-    setIsVisible(true); // Added line
+    setIsVisible(true); 
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll); // Clean up
+      window.removeEventListener('scroll', handleScroll); 
     };
   }, []);
 
@@ -71,9 +70,14 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
   };
 
   const handleLinkClick = (e, index) => {
-    if (isMobileView && subMenuOpen !== index) {
-      e.preventDefault();
-      setSubMenuOpen(index);
+    if (isMobileView) {
+      // On mobile, toggle subMenuOpen
+      if (subMenuOpen === index) {
+        setSubMenuOpen(null);
+      } else {
+        e.preventDefault();
+        setSubMenuOpen(index);
+      }
     }
   };
 
@@ -125,24 +129,29 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
 
   const getSubMenuClass = (subLinks) => subLinks.length > 8 ? `${styles.subMenu} ${styles.twoColumn}` : styles.subMenu;
 
-  // Function to get the opposite color
   const getOppositeColor = (color) => {
     if (color.toLowerCase() === '#cbbaa1') {
       return '#535E6B';
     } else if (color.toLowerCase() === '#535e6b') {
       return '#CBBAA1';
     } else {
-      // If color is neither of the two, default to 'transparent' or another fallback color
       return 'transparent';
     }
   };
 
-  const backgroundColor = isScrolled ? getOppositeColor(linkColor) : 'transparent'; // Set background color based on scroll
+  const backgroundColor = isScrolled ? getOppositeColor(linkColor) : 'transparent';
 
+  const renderSubLinks = (subLinks, index) =>
+    subLinks.map((subLink, idx) => (
+      <Link key={idx} href={subLink.href} className={styles.subLink}>
+        <span className={styles.subLinkText}>{subLink.label}</span>
+        <img src="/svg/f2.svg" alt="icon" className={styles.subLinkIcon}/>
+      </Link>
+    ));
 
   return (
     <div
-      className={`${styles.navbarContainer} ${isVisible ? styles.navbarVisible : ''}`} style={{ backgroundColor }}>{/* Apply backgroundColor */}
+      className={`${styles.navbarContainer} ${isVisible ? styles.navbarVisible : ''}`} style={{ backgroundColor }}>
       <nav className={styles.navbar}>
         <div className={styles.logoWrapper}>
           <Link href="/">
@@ -158,69 +167,71 @@ export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' })
           </button>
           <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
             <div className={styles.link}>
-              <Link href="/fiscal" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 0)}>{t('navbar:fiscal')}</Link>
+              <Link href="/fiscal" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 0)}>
+                {t('navbar:fiscal')}
+              </Link>
             </div>
-            <div className={`${getSubMenuClass(fiscalSubLinks)} ${subMenuOpen === 0 ? styles.open : ''}`}>
+            <div className={`${getSubMenuClass(fiscalSubLinks)} ${(subMenuOpen === 0 && isMobileView) || (!isMobileView && subMenuOpen === 0) ? styles.open : ''}`}>
               {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:fiscal')}</div>}
               {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {fiscalSubLinks.map((subLink, index) => (
-                <Link key={index} href={subLink.href} className={styles.subLink}>{subLink.label}</Link>
-              ))}
+              {renderSubLinks(fiscalSubLinks, 0)}
             </div>
           </div>
           <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
             <div className={styles.link}>
-              <Link href="/legal" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 1)}>{t('navbar:legal')}</Link>
+              <Link href="/legal" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 1)}>
+                {t('navbar:legal')}
+              </Link>
             </div>
-            <div className={`${getSubMenuClass(legalSubLinks)} ${subMenuOpen === 1 ? styles.open : ''}`}>
+            <div className={`${getSubMenuClass(legalSubLinks)} ${(subMenuOpen === 1 && isMobileView) || (!isMobileView && subMenuOpen === 1) ? styles.open : ''}`}>
               {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:legal')}</div>}
               {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {legalSubLinks.map((subLink, index) => (
-                <Link key={index} href={subLink.href} className={styles.subLink}>{subLink.label}</Link>
-              ))}
+              {renderSubLinks(legalSubLinks, 1)}
             </div>
           </div>
           <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
             <div className={styles.link}>
-              <Link href="/patrimonial" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 2)}>{t('navbar:patrimonial')}</Link>
+              <Link href="/patrimonial" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 2)}>
+                {t('navbar:patrimonial')}
+              </Link>
             </div>
-            <div className={`${getSubMenuClass(patrimonialSubLinks)} ${subMenuOpen === 2 ? styles.open : ''}`}>
+            <div className={`${getSubMenuClass(patrimonialSubLinks)} ${(subMenuOpen === 2 && isMobileView) || (!isMobileView && subMenuOpen === 2) ? styles.open : ''}`}>
               {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:patrimonial')}</div>}
               {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {patrimonialSubLinks.map((subLink, index) => (
-                <Link key={index} href={subLink.href} className={styles.subLink}>{subLink.label}</Link>
-              ))}
+              {renderSubLinks(patrimonialSubLinks, 2)}
             </div>
           </div>
           <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
             <div className={styles.link}>
-              <Link href="/venture-capital" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 3)}>{t('navbar:venture-capital')}</Link>
+              <Link href="/venture-capital" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 3)}>
+                {t('navbar:venture-capital')}
+              </Link>
             </div>
-            <div className={`${getSubMenuClass(ventureSubLinks)} ${subMenuOpen === 3 ? styles.open : ''}`}>
+            <div className={`${getSubMenuClass(ventureSubLinks)} ${(subMenuOpen === 3 && isMobileView) || (!isMobileView && subMenuOpen === 3) ? styles.open : ''}`}>
               {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:venture-capital')}</div>}
               {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {ventureSubLinks.map((subLink, index) => (
-                <Link key={index} href={subLink.href} className={styles.subLink}>{subLink.label}</Link>
-              ))}
+              {renderSubLinks(ventureSubLinks, 3)}
             </div>
           </div>
           <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
             <div className={styles.link}>
-              <Link href="/alianzas-estrategicas" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 4)}>{t('navbar:alianzas-estrategicas')}</Link>
+              <Link href="/alianzas-estrategicas" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 4)}>
+                {t('navbar:alianzas-estrategicas')}
+              </Link>
             </div>
-            <div className={`${getSubMenuClass(alianzasSubLinks)} ${subMenuOpen === 4 ? styles.open : ''}`}>
+            <div className={`${getSubMenuClass(alianzasSubLinks)} ${(subMenuOpen === 4 && isMobileView) || (!isMobileView && subMenuOpen === 4) ? styles.open : ''}`}>
               {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:alianzas-estrategicas')}</div>}
               {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {alianzasSubLinks.map((subLink, index) => (
-                <Link key={index} href={subLink.href} className={styles.subLink}>{subLink.label}</Link>
-              ))}
+              {renderSubLinks(alianzasSubLinks, 4)}
             </div>
           </div>
           <div className={styles.linkWrapper}>
             <div className={styles.link}>
-              <Link href="/nuestro-equipo" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 5)}>{t('navbar:nuestro-equipo')}</Link>
+              <Link href="/nuestro-equipo" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 5)}>
+                {t('navbar:nuestro-equipo')}
+              </Link>
             </div>
-            <div className={`${styles.subMenu} ${subMenuOpen === 5 ? styles.open : ''}`}>
+            <div className={`${styles.subMenu} ${(subMenuOpen === 5 && isMobileView) || (!isMobileView && subMenuOpen === 5) ? styles.open : ''}`}>
               {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:nuestro-equipo')}</div>}
               {!isMobileView && <div className={styles.subMenuDivider}></div>}
             </div>

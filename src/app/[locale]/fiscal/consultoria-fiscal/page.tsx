@@ -26,21 +26,14 @@ export default async function Home({ params: { locale } }: { params: { locale: s
       locale={locale}
       namespaces={i18nNamespaces}>
       <main className={styles.main}>
-        <Navbar/>
+        <Navbar />
         <div className={styles.content}>
-        <Image
-            src="/svg/l2.svg"
-            alt="Top Right Decoration"
+          <Image
+            src="/svg/l5.svg"
+            alt="Bottom Left Decoration"
             width={1500}
             height={1500}
-            className={styles.topRightImg}
-          />
-          <Image
-            src="/svg/logo3.svg"
-            alt="Bottom Left Decoration"
-            width={300}
-            height={300}
-            className={styles.bottomLeftImg}
+            className={styles.bottomRightImg}
           />
           <div className={styles.pageCategory}>
             <p>{t('category')}</p>
