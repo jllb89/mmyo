@@ -30,8 +30,8 @@ export default async function Home({ params: { locale } }: { params: { locale: s
           <Image
             src="/svg/l2.svg"
             alt="Top Right Decoration"
-            width={1100}
-            height={1100}
+            width={1500}
+            height={1500}
             className={styles.topRightImg}
           />
           <Image

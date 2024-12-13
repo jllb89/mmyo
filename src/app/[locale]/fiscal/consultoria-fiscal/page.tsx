@@ -6,6 +6,7 @@ import Navbar from '../../../../components/Navbar';
 import MailingList from '../../../../components/MailingList';
 import Footer from '../../../../components/Footer';
 import HighlightText from '../../../../components/HighlightText';
+import Image from 'next/image';
 
 const i18nNamespaces = ['consultoria-fiscal-local-e-internacional', 'common'];
 
@@ -25,8 +26,22 @@ export default async function Home({ params: { locale } }: { params: { locale: s
       locale={locale}
       namespaces={i18nNamespaces}>
       <main className={styles.main}>
-        <Navbar linkColor="#535E6B" logoType="logo2.svg" />
+        <Navbar/>
         <div className={styles.content}>
+        <Image
+            src="/svg/l2.svg"
+            alt="Top Right Decoration"
+            width={1500}
+            height={1500}
+            className={styles.topRightImg}
+          />
+          <Image
+            src="/svg/logo3.svg"
+            alt="Bottom Left Decoration"
+            width={300}
+            height={300}
+            className={styles.bottomLeftImg}
+          />
           <div className={styles.pageCategory}>
             <p>{t('category')}</p>
           </div>

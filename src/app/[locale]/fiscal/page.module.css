@@ -2,12 +2,15 @@
 
 .content {
     position: relative; /* Needed to position images inside this container */
-    background-color: #535E6B;
+/*     background: #535E6B url('/images/f1.webp') no-repeat center center; 
+    background-size: cover; */
     color: #CBBAA1;
+    background-color: #343d48;
     margin: 0;
     height: auto;
     padding-bottom: 4rem;
 }
+
 
 /* Positioning the texts above the images */
 .texts {
@@ -64,7 +67,7 @@
     top: -1rem;
     right: 0;
     z-index: 0; /* Behind the .texts which has z-index:1 */
-    opacity: 0.15; /* Adjust opacity if desired */
+    opacity: 0.05; /* Adjust opacity if desired */
 }
 
 .bottomLeftImg {
@@ -72,7 +75,7 @@
     bottom: 0;
     left: 0;
     z-index: 0;
-    opacity: 0.8; /* Adjust opacity if desired */
+    opacity: 0.2; /* Adjust opacity if desired */
 }
 
 @media (max-width: 900px) {
