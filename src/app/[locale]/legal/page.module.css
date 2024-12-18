@@ -2,14 +2,15 @@
 
 .content {
     position: relative; /* Needed to position images inside this container */
-    background-color: #535E6B;
+/*     background: #535E6B url('/images/f1.webp') no-repeat center center; 
+    background-size: cover; */
     color: #CBBAA1;
+    background-color: #343d48;
     margin: 0;
     height: auto;
     padding-bottom: 4rem;
 }
 
-/* Positioning the texts above the images */
 .texts {
     position: relative;
     z-index: 1; /* Ensures text is above the images */
@@ -19,8 +20,10 @@
     padding-bottom: 6rem;
     font-family: 'Inter', sans-serif;
     font-weight: 200;
-    font-size: 1rem;
+    font-size: 1.5rem;
     text-align: left;
+    opacity: 0; /* Initially invisible */
+    animation: fadeIn 1s ease-in forwards; /* Fade-in animation over 1s */
 }
 
 .texts h1 {
@@ -46,17 +49,50 @@
 }
 
 .linksList li {
-    margin-bottom: 2rem; /* Add space between list items */
+    margin-bottom: 3rem; /* Add space between list items */
 }
 
 .subLink {
     color: #CBBAA1;
-    text-decoration: none;
+    text-decoration: none; /* Remove the default underline */
     font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: 1rem;
-    text-decoration: underline;
+    font-weight: 300;
+    font-size: 1.1rem;
+    position: relative; /* Needed for pseudo-elements positioning */
+    display: inline-flex; /* Allows alignment of text and icon together */
+    align-items: center; /* Vertically center text and icon */
 }
+
+/* Use ::before for the animated underline line */
+.subLink::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0; 
+    width: 100%;
+    height: 1px; /* Thickness of the underline */
+    background-color: currentColor; /* Match link color */
+    transform: scaleX(0); /* Start hidden */
+    transform-origin: left center; /* Animate from left to right */
+    transition: transform 0.5s ease; /* Smooth animation */
+}
+
+/* On hover, show the underline from left to right */
+.subLink:hover::before {
+    transform: scaleX(1);
+}
+
+/* Use ::after for the SVG icon so it appears after the text */
+.subLink::after {
+    content: url('/svg/f1.svg'); /* Insert the SVG icon after text */
+    display: inline-block;
+    width: 1em; /* Adjust if needed */
+    height: 1em; /* Adjust if needed */
+    margin-left: 1rem; /* Space between text and icon */
+}
+
+/* Since line is now ::before, the icon (in ::after) will appear after the text, as intended. */
+
 
 /* Positioning the images inside .content */
 .topRightImg {
@@ -64,7 +100,7 @@
     top: -1rem;
     right: 0;
     z-index: 0; /* Behind the .texts which has z-index:1 */
-    opacity: 0.15; /* Adjust opacity if desired */
+    opacity: 0.05; /* Adjust opacity if desired */
 }
 
 .bottomLeftImg {
@@ -72,7 +108,7 @@
     bottom: 0;
     left: 0;
     z-index: 0;
-    opacity: 0.8; /* Adjust opacity if desired */
+    opacity: 0.2; /* Adjust opacity if desired */
 }
 
 @media (max-width: 900px) {
@@ -86,5 +122,32 @@
         line-height: 170%;
         padding-right: 1rem;
     }
+
+    .texts {
+        font-size: 1.2rem;
+    }
+
+    .subLink {
+        font-size: 1rem;
+        text-decoration: underline; /* Restore simple underline on small screens */
+    }
+
+    /* Remove animation and icon on smaller screens */
+    .subLink::before {
+        content: none; /* Remove the animated underline */
+        transition: none; /* No animation */
+    }
+
+    .subLink::after {
+        content: none; /* Remove the SVG icon */
+    }
 }
 
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

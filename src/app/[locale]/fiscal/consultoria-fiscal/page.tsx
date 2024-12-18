@@ -29,7 +29,7 @@ export default async function Home({ params: { locale } }: { params: { locale: s
         <Navbar />
         <div className={styles.content}>
           <Image
-            src="/svg/l5.svg"
+            src="/images/l5.png"
             alt="Bottom Left Decoration"
             width={1500}
             height={1500}

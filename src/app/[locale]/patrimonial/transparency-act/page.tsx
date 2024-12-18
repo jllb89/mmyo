@@ -6,6 +6,7 @@ import Navbar from '../../../../components/Navbar';
 import MailingList from '../../../../components/MailingList';
 import Footer from '../../../../components/Footer';
 import HighlightText from '../../../../components/HighlightText';
+import Image from 'next/image';
 
 const i18nNamespaces = ['corporate-transparency-act', 'common'];
 
@@ -26,6 +27,13 @@ export default async function Home({ params: { locale } }: { params: { locale: s
       <main className={styles.main}>
         <Navbar linkColor="#535E6B" logoType="logo2.svg" />
         <div className={styles.content}>
+        <Image
+            src="/images/l5.png"
+            alt="Bottom Left Decoration"
+            width={1500}
+            height={1500}
+            className={styles.bottomRightImg}
+          />
           <div className={styles.pageCategory}>
             <p>{t('category')}</p>
           </div>

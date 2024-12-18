@@ -4,18 +4,24 @@
     color: #535E6B;
     margin: 0;
     height: auto;
-    padding-top: 10rem;
     padding-bottom: 4rem;
+    position: relative;
 }
 
 .pageCategory {
     color: #535E6B;
     font-family: 'Inter', sans-serif;
     font-weight: 200;
-    font-size: .8rem;
+    font-size: 3rem;
     text-align: center;
-    padding-bottom: 1rem;
-    text-decoration: underline;
+    padding-bottom: 2rem;
+    background: url('/images/f5.png') no-repeat center center;
+    background-size: cover;
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Vertically center the text */
+    padding-top: 3rem;
 }
 
 .texts {
@@ -28,6 +34,7 @@
     font-size: 1rem;
     line-height: 2rem;
     text-align: left;
+    z-index: 100;
 }
 
 .texts h1 {
@@ -75,6 +82,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 10rem;
+    z-index: 30;
 }
 
 .linkWrapper {
@@ -108,6 +116,18 @@
 
 .rightAlign {
     text-align: right;
+}
+
+.bottomRightImg {
+    position: absolute;
+    bottom: 0;
+    right: 0;                
+    left: 0;
+    width: 100vw;
+    height: auto;   
+    z-index: 0;
+    opacity: 0.15;
+    pointer-events: none;
 }
 
 @media (max-width: 900px) {
