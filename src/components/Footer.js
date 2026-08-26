@@ -62,16 +62,6 @@ export default function Footer() {
                             ))}
                         </p>
                     </div>
-                    <div className={styles.footerColumn25}>
-                        <h3>{t('column-3-follow-us')}</h3>
-                        <ul>
-                            <li>
-                                <Link href="#link6">Fb</Link>
-                                <Link href="#link7">Ig</Link>
-                                <Link href="#link8">Li</Link>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 <div className={styles.lastFooterRow}>
                     <div className={styles.footerLegal}>

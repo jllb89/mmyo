@@ -8,8 +8,8 @@ import styles from '../app/[locale]/nuestro-equipo/page.module.css';
 interface Member {
   name: string;
   position: string;
-  linkedin: string;
-  image: string;
+  linkedin?: string;
+  image?: string;
 }
 
 interface TeamProps {
@@ -78,10 +78,12 @@ const Team: React.FC<TeamProps> = ({ socios, asociados, sociosTitle, asociadosTi
               {member.name}
             </p>
             <p className={styles.position}>{member.position}</p>
-            <Link href={member.linkedin} className={styles.linkedinLink}>
-              LinkedIn
-            </Link>
-            {visibleImageIndex === index && (
+            {member.linkedin && (
+              <Link href={member.linkedin} className={styles.linkedinLink}>
+                LinkedIn
+              </Link>
+            )}
+            {member.image && visibleImageIndex === index && (
               <div className={styles.imageWrapper}>
                 <Image
                   src={member.image}
@@ -123,10 +125,12 @@ const Team: React.FC<TeamProps> = ({ socios, asociados, sociosTitle, asociadosTi
               {member.name}
             </p>
             <p className={styles.position}>{member.position}</p>
-            <Link href={member.linkedin} className={styles.linkedinLink}>
-              LinkedIn
-            </Link>
-            {visibleImageIndex === index + socios.length && (
+            {member.linkedin && (
+              <Link href={member.linkedin} className={styles.linkedinLink}>
+                LinkedIn
+              </Link>
+            )}
+            {member.image && visibleImageIndex === index + socios.length && (
               <div className={styles.imageWrapper}>
                 <Image
                   src={member.image}

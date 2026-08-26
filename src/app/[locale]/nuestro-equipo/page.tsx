@@ -27,7 +27,6 @@ export default async function Home({ params: { locale } }: { params: { locale: s
     { name: 'Federico Groenewold Rivas', position: t('socio'), linkedin: 'https://linkedin.com/in/johndoe', image: '/images/fede.webp' },
     { name: 'Gyselle San Martín', position: t('socio-fundador'), linkedin: 'https://linkedin.com/in/janesmith', image: '/images/gsm.webp' },
     { name: 'Ma. Elena Paredes Sánchez', position: t('socio'), linkedin: 'https://linkedin.com/in/jimbrown', image: '/images/elena.webp' },
-    { name: 'Rodolfo Martínez Valdez', position: t('socio'), linkedin: 'https://linkedin.com/in/johndoe', image: '/images/RMV.webp' },
     { name: 'Daniel M. Ramírez Robles', position: t('socio-fundador'), linkedin: 'https://linkedin.com/in/janesmith', image: '/images/daniel.webp' },
   ];
 
@@ -35,15 +34,17 @@ export default async function Home({ params: { locale } }: { params: { locale: s
     { name: 'Mayanin Bello Carranza', position: t('consultor'), linkedin: 'https://linkedin.com/in/lisawhite', image: '/images/mayanin.webp' },
     { name: 'Ana María Caballero Rosetti', position: t('asociada'), linkedin: 'https://linkedin.com/in/tomgreen', image: '/images/ana.webp' },
     { name: 'Gabriela Castillo Soriano', position: t('asociada-area-patrimonial'), linkedin: 'https://linkedin.com/in/sarablack', image: '/images/gaby.webp' },
-    { name: 'Alfonso Corral Montalvo', position: t('asociado'), linkedin: 'https://linkedin.com/in/jakeblue', image: '/images/alfonso.webp' },
-    { name: 'José Arturo Flores Graue', position: t('supervisor'), linkedin: 'https://linkedin.com/in/ninared', image: '/images/arturo.webp' },
-    { name: 'Jocelyn Mariana García Martínez', position: t('gerente'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/jocelyn.webp' },
-    { name: 'Luis Fernando Garrido Treviño', position: t('asociado'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/luis.webp' },
+    { name: 'José Arturo Flores Graue', position: t('gerente'), linkedin: 'https://linkedin.com/in/ninared', image: '/images/arturo.webp' },
+    { name: 'Jocelyn Mariana García Martínez', position: t('asociada'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/jocelyn.webp' },
+    { name: 'Melanie García Gallardo', position: t('gerente') },
     { name: 'Moisés Godinez Hernández', position: t('asociado'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/moises.webp' },
-    { name: 'Lizeth Adriana Hernández Aguirre', position: t('gerente'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/lizeth.webp' },
+    { name: 'Larissa González García', position: t('gerente') },
+    { name: 'Erick Johan Hernández Pérez', position: t('gerente') },
+    { name: 'Lizeth Adriana Hernández Aguirre', position: t('asociada'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/lizeth.webp' },
+    { name: 'Sergio Abraham Jiménez Villeda', position: t('gerente') },
     { name: 'Raúl Iván Martínez González Vega', position: t('asociado'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/raul.webp' },
     { name: 'Ilse Gabriela Moreno López', position: t('asociada-area-patrimonial'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/ilse.webp' },
-    { name: 'José Mario Pereda Valdez', position: t('gerente'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/jose.webp' },
+    { name: 'José Mario Pereda Valdez', position: t('asociado'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/jose.webp' },
   ];
 
   const sociosTitle = t("socios");
