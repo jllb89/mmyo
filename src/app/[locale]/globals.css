@@ -1,14 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+:root {
+  --mmyo-deep-blue: #272e37;
+  --mmyo-sand: #cbbaa1;
+  --mmyo-white: #ffffff;
+  --mmyo-spacing-lg: 32px;
+  --mmyo-spacing-3xl: 96px;
+}
+
 html,
 body {
   font-family: 'Inter';
   max-width: 100vw;
   overflow-x: hidden;
+  overflow-x: clip;
   background-color: #F3F5F6;
   color: #535E6B;
   margin: 0;
   overflow-y: visible;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
 }
 
 a:any-link {

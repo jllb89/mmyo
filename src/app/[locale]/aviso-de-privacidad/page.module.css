@@ -1,84 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
-
-.content {
-    background-color: #CBBAA1;
-    color: #535E6B;
-    margin: 0;
-    height: auto;
-    padding-bottom: 4rem;
+.main { --blue: var(--mmyo-deep-blue, #272e37); --gold: var(--mmyo-sand, #cbbaa1); display: flex; flex-direction: column; padding-top: 112px; color: var(--blue); background: var(--gold); }
+.hero { display: grid; min-height: 510px; grid-template-columns: minmax(0, 1fr) minmax(380px, 620px); grid-template-rows: 1fr auto; gap: 48px 80px; padding: 72px 64px 48px; border-top: 1px solid var(--blue); background: var(--gold); box-sizing: border-box; }
+.eyebrow, .heroMeta span, .documentAside p, .contactBlock span { margin: 0; font-size: 10px; font-weight: 500; line-height: 1.4; letter-spacing: .13em; text-transform: uppercase; }
+.hero h1 { max-width: 690px; margin: 30px 0 0; font-size: clamp(56px, 6vw, 86px); font-weight: 200; line-height: 1.02; letter-spacing: -.045em; }
+.heroStatement { max-width: 600px; margin: 64px 0 0; font-size: 25px; font-weight: 300; line-height: 1.5; letter-spacing: -.022em; }
+.heroMeta { display: flex; grid-column: 1 / -1; justify-content: space-between; gap: 24px; padding-top: 30px; border-top: 1px solid var(--blue); }
+.documentSection { display: grid; grid-template-columns: minmax(260px, .72fr) minmax(560px, 1.28fr); gap: clamp(72px, 9vw, 150px); padding: 112px 64px 132px; color: var(--gold); background: var(--blue); box-sizing: border-box; }
+.documentAside { position: relative; }
+.asideInner { position: sticky; top: 32px; }
+.documentAside h2 { max-width: 440px; margin: 34px 0 72px; font-size: clamp(38px, 3.7vw, 54px); font-weight: 200; line-height: 1.12; letter-spacing: -.035em; }
+.contactBlock { padding-top: 22px; border-top: 1px solid var(--gold); }
+.contactBlock span { display: block; }
+.contactBlock a { display: block; margin-top: 20px; color: var(--gold); font-size: 14px; font-weight: 300; line-height: 1.5; overflow-wrap: anywhere; text-decoration: none; }
+.legalCopy { min-width: 0; border-top: 1px solid var(--gold); }
+.legalCopy > section { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 24px; padding: 34px 0 42px; border-bottom: 1px solid var(--gold); }
+.legalCopy span { padding-top: 4px; font-size: 9px; font-weight: 500; letter-spacing: .1em; opacity: .72; }
+.legalCopy p { margin: 0; font-size: 15px; font-weight: 300; line-height: 1.78; white-space: pre-line; }
+.legalCopy .leadSection p { font-size: 20px; line-height: 1.62; letter-spacing: -.012em; }
+@media (max-width: 1200px) {
+  .main { padding-top: 96px; }
+  .hero { grid-template-columns: minmax(0, .9fr) minmax(360px, 1.1fr); gap: 48px; }
+  .documentSection { grid-template-columns: minmax(230px, .6fr) minmax(500px, 1.4fr); gap: 64px; }
 }
-
-.texts {
-    max-width: 1200px;
-    margin: auto;
-    padding-top: 14rem;
-    padding-bottom: 6rem;
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: 1rem;
-    line-height: 2rem;
-    text-align: left;
+@media (max-width: 860px) {
+  .documentSection { grid-template-columns: 1fr; }
+  .asideInner { position: static; }
+  .documentAside h2 { margin-bottom: 48px; }
+  .contactBlock { max-width: 480px; }
 }
-
-.texts h1 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: 3rem;
-    text-align: left;
-    margin: 0;
-    padding-bottom: 4rem;
-    padding-left: 1rem;
-    max-width: 50%;
-    line-height: 4rem;
-}
-
-.textLine {
-    padding-left: 50%;
-    padding-bottom: 1rem;
-}
-
-.texts ul {
-    color: #CBBAA1;
-    text-decoration: none;
-    padding-left: 25%;
-    list-style: none;
-}
-
-.linksList li {
-    margin-bottom: 2rem;
-}
-
-.subLink {
-    color: #CBBAA1;
-    text-decoration: none;
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: 1rem;
-    text-decoration: underline;
-}
-
-@media (max-width: 900px) {
-
-    .content {
-        padding-bottom: 1rem;
-    }
-
-    .texts {
-        padding-top: 12rem;
-        padding-right: 1rem;
-    }
-
-    .texts h1 {
-        font-size: 2.5rem;
-        padding-bottom: 4rem;
-        padding-left: 1rem;
-        max-width: 90%;
-        line-height: 0;
-    }
-    
-    .textLine {
-        padding-left: 15%;
-        padding-bottom: 1rem;
-    }
-
+@media (max-width: 700px) {
+  .hero { display: flex; min-height: 580px; flex-direction: column; justify-content: space-between; gap: 28px; padding: 34px 24px 30px; }
+  .hero h1 { margin-top: 20px; font-size: 48px; line-height: 1.05; }
+  .heroStatement { margin: 0; font-size: 18px; line-height: 1.52; }
+  .heroMeta { flex-direction: column; gap: 6px; padding-top: 22px; }
+  .documentSection { gap: 68px; padding: 72px 24px 84px; }
+  .documentAside h2 { margin: 42px 0 52px; font-size: 39px; }
+  .legalCopy > section { grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 28px 0 34px; }
+  .legalCopy p { font-size: 14px; line-height: 1.74; }
+  .legalCopy .leadSection p { font-size: 17px; line-height: 1.65; }
 }

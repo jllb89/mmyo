@@ -1,14 +1,9 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../app/[locale]/nuestro-equipo/page.module.css';
 
 interface Member {
   name: string;
   position: string;
-  linkedin?: string;
   image?: string;
 }
 
@@ -17,134 +12,69 @@ interface TeamProps {
   asociados: Member[];
   sociosTitle: string;
   asociadosTitle: string;
+  leadershipLabel: string;
+  teamLabel: string;
 }
 
-const Team: React.FC<TeamProps> = ({ socios, asociados, sociosTitle, asociadosTitle }) => {
-  const [visibleImageIndex, setVisibleImageIndex] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+const Team: React.FC<TeamProps> = ({ socios, asociados, sociosTitle, asociadosTitle, leadershipLabel, teamLabel }) => {
+  const featuredPartners = socios.slice(0, 3);
+  const remainingPartners = socios.slice(3);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Adjust the breakpoint as needed
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const toggleImageVisibility = (index: number) => {
-    setVisibleImageIndex((prevIndex) => (prevIndex === index ? null : index));
-  };
-
-  const handleNameClick = (e: React.MouseEvent, index: number) => {
-    e.stopPropagation();
-    toggleImageVisibility(index);
-  };
-
-  const handleMainClick = () => {
-    if (isMobile) {
-      setVisibleImageIndex(null);
-    }
-  };
+  const renderPartner = (member: Member, index: number, featured = false) => (
+    <article className={`${styles.partnerCard} ${featured ? styles.featuredPartner : ''}`} key={member.name}>
+      {member.image && (
+        <div className={styles.portrait}>
+          <Image
+            src={member.image}
+            alt={member.name}
+            fill
+            sizes={featured ? '(max-width: 700px) 44vw, 28vw' : '(max-width: 700px) 44vw, 20vw'}
+            className={styles.portraitImage}
+          />
+        </div>
+      )}
+      <h3><span>{String(index + 1).padStart(2, '0')}</span>{member.name}</h3>
+      <p>{member.position}</p>
+    </article>
+  );
 
   return (
-    <main className={styles.main} onClick={handleMainClick}>
-      <div className={styles.homeTitle}>
-        <h3>
-          {sociosTitle.split('\n').map((line: string, index: number) => (
-            <span key={index}>
-              {line}
-              <br />
-            </span>
-          ))}
-        </h3>
-      </div>
-
-      <div className={styles.gridContainer}>
-        {socios.map((member, index) => (
-          <div
-            className={styles.gridItem}
-            key={index}
-            onClick={(e) => isMobile && handleNameClick(e, index)}
-            onMouseEnter={() => !isMobile && setVisibleImageIndex(index)}
-            onMouseLeave={() => !isMobile && setVisibleImageIndex(null)}
-          >
-            <p
-              className={styles.name}
-              onClick={(e) => isMobile && handleNameClick(e, index)}
-            >
-              {member.name}
-            </p>
-            <p className={styles.position}>{member.position}</p>
-            {member.linkedin && (
-              <Link href={member.linkedin} className={styles.linkedinLink}>
-                LinkedIn
-              </Link>
-            )}
-            {member.image && visibleImageIndex === index && (
-              <div className={styles.imageWrapper}>
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  width={200}
-                  height={200}
-                  className={styles.image}
-                />
-              </div>
-            )}
+    <>
+      {socios.length > 0 && (
+        <section className={styles.partnersSection} aria-labelledby="partners-title">
+          <header className={styles.sectionHeader}>
+            <h2 id="partners-title">{sociosTitle}</h2>
+            <p>{leadershipLabel} / {String(socios.length).padStart(2, '0')}</p>
+          </header>
+          <div className={styles.sectionRule} />
+          <div className={styles.featuredPartners}>
+            {featuredPartners.map((member, index) => renderPartner(member, index, true))}
           </div>
-        ))}
-      </div>
-
-      <div className={styles.homeTitle}>
-        <h3>
-          {asociadosTitle.split('\n').map((line: string, index: number) => (
-            <span key={index}>
-              {line}
-              <br />
-            </span>
-          ))}
-        </h3>
-      </div>
-
-      <div className={styles.gridContainer}>
-        {asociados.map((member, index) => (
-          <div
-            className={styles.gridItem}
-            key={index}
-            onClick={(e) => isMobile && handleNameClick(e, index + socios.length)}
-            onMouseEnter={() => !isMobile && setVisibleImageIndex(index + socios.length)}
-            onMouseLeave={() => !isMobile && setVisibleImageIndex(null)}
-          >
-            <p
-              className={styles.name}
-              onClick={(e) => isMobile && handleNameClick(e, index + socios.length)}
-            >
-              {member.name}
-            </p>
-            <p className={styles.position}>{member.position}</p>
-            {member.linkedin && (
-              <Link href={member.linkedin} className={styles.linkedinLink}>
-                LinkedIn
-              </Link>
-            )}
-            {member.image && visibleImageIndex === index + socios.length && (
-              <div className={styles.imageWrapper}>
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  width={300}
-                  height={300}
-                  className={styles.image}
-                />
-              </div>
-            )}
+          <div className={styles.partnerGrid}>
+            {remainingPartners.map((member, index) => renderPartner(member, index + 3))}
           </div>
-        ))}
-      </div>
-    </main>
+        </section>
+      )}
+
+      {asociados.length > 0 && (
+        <section className={styles.associatesSection} aria-labelledby="associates-title">
+          <header className={styles.sectionHeader}>
+            <h2 id="associates-title">{asociadosTitle}</h2>
+            <p>{teamLabel} / {String(asociados.length).padStart(2, '0')}</p>
+          </header>
+          <div className={styles.sectionRule} />
+          <div className={styles.associateGrid}>
+            {asociados.map((member, index) => (
+              <article className={styles.associateRow} key={member.name}>
+                <span className={styles.associateIndex}>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{member.name}</h3>
+                <p>{member.position}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
   );
 };
 

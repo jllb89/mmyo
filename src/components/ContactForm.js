@@ -5,106 +5,77 @@ import { useTranslation } from 'react-i18next';
 import styles from './ContactForm.module.css';
 
 export default function ContactForm() {
-    const { t } = useTranslation('contacto');
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: ''
-    });
-    const [submitted, setSubmitted] = useState(false);
-    const [error, setError] = useState('');
+  const { t } = useTranslation('contacto');
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData((current) => ({ ...current, [name]: value }));
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError('');
 
-        console.log('Submitting form data:', formData);
+    if (!formData.name || !formData.email || !formData.message) {
+      setError(t('invalid-input'));
+      return;
+    }
 
-        if (formData.name && formData.email && formData.message) {
-            try {
-                const response = await fetch('/api/contact-form', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });                
+    setSubmitting(true);
+    try {
+      const response = await fetch('/api/contact-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-                if (response.ok) {
-                    console.log('Email sent successfully');
-                    setError('');
-                    setSubmitted(true);
-                } else {
-                    const errorData = await response.json();
-                    console.error('Server error:', errorData);
-                    setError(`Error: ${errorData.error || t('invalid-input')}`);
-                }
-            } catch (error) {
-                console.error('Network error:', error);
-                setError(`Error: ${error.message || t('invalid-input')}`);
-            }
-        } else {
-            console.warn('Form validation failed');
-            setError(t('invalid-input'));
-        }
-    };
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || t('invalid-input'));
+      }
 
+      setSubmitted(true);
+    } catch (submissionError) {
+      setError(submissionError.message || t('invalid-input'));
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
+  if (submitted) {
     return (
-        <div className={styles.applicationForm}>
-            <div className={styles.form}>
-                {!submitted ? (
-                    <>
-                        <div className={styles.inputContainer}>
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder={t('form-field-name-1')}
-                                className={styles.input}
-                                value={formData.name}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <input
-                                type="text"
-                                name="email"
-                                placeholder={t('form-field-name-2')}
-                                className={styles.input}
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <textarea
-                                name="message"
-                                placeholder={t('form-field-name-3')}
-                                className={styles.textarea}
-                                value={formData.message}
-                                onChange={handleChange}
-                                maxLength="250"
-                            />
-                        </div>
-                        <div className={styles.buttonContainer}>
-                            <button className={styles.submitButton} onClick={handleSubmit}>
-                                {t('form-button')}
-                            </button>
-                        </div>
-                        <div className={styles.errorContainer}>
-                            {error && <p className={styles.error}>{error}</p>}
-                        </div>
-                    </>
-                ) : (
-                    <p className={`${styles.confirmation} ${styles.fadeIn}`}>{t('confirmation')}</p>
-                )}
-            </div>
-        </div>
+      <div className={styles.confirmation} role="status">
+        <span>{t('confirmation-label')}</span>
+        <p>{t('confirmation')}</p>
+      </div>
     );
+  }
+
+  return (
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <div className={styles.field}>
+        <label htmlFor="contact-name">{t('form-field-name-1')}</label>
+        <input id="contact-name" type="text" name="name" autoComplete="name" value={formData.name} onChange={handleChange} required />
+      </div>
+      <div className={styles.field}>
+        <label htmlFor="contact-email">{t('form-field-name-2')}</label>
+        <input id="contact-email" type="email" name="email" autoComplete="email" value={formData.email} onChange={handleChange} required />
+      </div>
+      <div className={`${styles.field} ${styles.messageField}`}>
+        <label htmlFor="contact-message">{t('form-field-name-3')}</label>
+        <textarea id="contact-message" name="message" value={formData.message} onChange={handleChange} maxLength={250} required />
+        <span className={styles.counter}>{formData.message.length}/250</span>
+      </div>
+      <button className={styles.submitButton} type="submit" disabled={submitting}>
+        <span>{submitting ? t('sending') : t('form-button')}</span>
+        <span aria-hidden="true">↗</span>
+      </button>
+      <div className={styles.errorContainer} aria-live="polite">
+        {error && <p className={styles.error}>{error}</p>}
+      </div>
+    </form>
+  );
 }

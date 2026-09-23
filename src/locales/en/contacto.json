@@ -7,5 +7,19 @@
     "form-button": "SEND MESSAGE",
     "header": "Get in touch",
     "text": "Corporativo Espacio Santa Fe,\n\nCarretera México Toluca 5420\n",
-    "confirmation": "Thank you for your message, we will contact you shortly."
+    "confirmation": "Thank you for your message. We will be in touch shortly.",
+    "confirmation-label": "Message received",
+    "invalid-input": "Please complete every field with valid information.",
+    "sending": "Sending",
+    "eyebrow": "Contact · MMYO",
+    "statement": "Let’s talk about the decisions that will define your business’s next move.",
+    "meta-left": "Tax · wealth · business advisory",
+    "meta-right": "Santa Fe · Mexico City",
+    "details-eyebrow": "Where to find us",
+    "details-title": "One conversation can change the perspective.",
+    "address-label": "Offices",
+    "address-line-1": "Corporativo Espacio Santa Fe",
+    "address-line-2": "Carretera México–Toluca 5420 · Floor 26",
+    "address-line-3": "El Yaqui · 05320 · Mexico City",
+    "form-intro": "Tell us briefly how we can help."
 }

@@ -7,5 +7,19 @@
     "form-button": "ENVIAR MENSAJE",
     "header": "Contacto",
     "text": "Corporativo Espacio Santa Fe,\n\nCarretera México Toluca 5420\n\nCol. El Yaqui. CP 05320 CDMX.",
-    "confirmation": "Gracias por tu mensaje, en breve nos pondremos en contacto contigo."
+    "confirmation": "Gracias por tu mensaje, en breve nos pondremos en contacto contigo.",
+    "confirmation-label": "Mensaje recibido",
+    "invalid-input": "Por favor completa todos los campos con información válida.",
+    "sending": "Enviando",
+    "eyebrow": "Contacto · MMYO",
+    "statement": "Hablemos de las decisiones que definirán el siguiente paso de tu negocio.",
+    "meta-left": "Asesoría fiscal · patrimonial · de negocios",
+    "meta-right": "Santa Fe · Ciudad de México",
+    "details-eyebrow": "Dónde encontrarnos",
+    "details-title": "Una conversación puede cambiar la perspectiva.",
+    "address-label": "Oficinas",
+    "address-line-1": "Corporativo Espacio Santa Fe",
+    "address-line-2": "Carretera México–Toluca 5420 · Piso 26",
+    "address-line-3": "El Yaqui · 05320 · CDMX",
+    "form-intro": "Cuéntanos brevemente cómo podemos ayudarte."
 }

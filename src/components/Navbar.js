@@ -1,247 +1,385 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
-import i18nConfig from '../../i18nConfig';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import i18nConfig from '../../i18nConfig';
 import styles from './Navbar.module.css';
 
-export default function Navbar({ linkColor = '#CBBAA1', logoType = 'logo.svg' }) {
+const CATEGORY_DEFINITIONS = [
+  {
+    key: 'fiscal', href: '/fiscal', items: [
+      ['/fiscal#consultoria-fiscal', 'consultoria'],
+      ['/fiscal#transacciones-financieras', 'especializacion'],
+      ['/fiscal#emisiones-valores', 'emisiones-bolsas'],
+      ['/fiscal#fondos-inversion', 'fondos-vcpc'],
+      ['/fiscal#proyectos-inversion', 'proyectos-inversion'],
+      ['/fiscal#proyectos-infraestructura', 'proyectos-infraestructura'],
+      ['/fiscal#reestructuraciones-corp', 'reestructuraciones-corporativas'],
+      ['/fiscal#asesoria-alianzas', 'asesoria-alianzas'],
+      ['/fiscal#promociones-fiscales', 'promociones-autoridades'],
+      ['/fiscal#due-dilligence', 'due-dilligence'],
+      ['/fiscal#revision-fiscal', 'revision-fiscal'],
+      ['/fiscal#proyectos-energia', 'proyectos-energia'],
+      ['/fiscal#dictamenes-fiscales', 'dictamenes-certificaciones'],
+    ],
+  },
+  {
+    key: 'legal', href: '/legal', items: [
+      ['/legal#analisis-preventivo', 'analisis-preventivo'],
+      ['/legal#litigio-contencioso', 'litigio-fiscal'],
+      ['/legal#litigio-constitucional-fiscal', 'litigio-constitucional'],
+      ['/legal#solucion-anticipada-de-controversias', 'solucion-controversias'],
+    ],
+  },
+  {
+    key: 'patrimonial', href: '/patrimonial', items: [
+      ['/patrimonial#evolucion-familiar', 'evolucion-familiar'],
+      ['/patrimonial#trust-book', 'trust-book'],
+      ['/patrimonial#family-governance', 'family-governance'],
+      ['/patrimonial#planeacion-estructuras', 'planeacion-estructuras'],
+      ['/patrimonial#cumplimiento-fiscal', 'cumplimiento-fiscal'],
+      ['/patrimonial#procesos-sucesorios', 'procesos-sucesorios'],
+      ['/patrimonial#liquidez-familiar', 'liquidez-familiar'],
+      ['/patrimonial#nuevas-inversiones', 'nuevas-inversiones'],
+      ['/patrimonial#transparency-act', 'transparency-act'],
+    ],
+  },
+  {
+    key: 'venture-capital', href: '/venture-capital', items: [
+      ['/venture-capital#estructuracion-inv', 'estructuracion-inv'],
+      ['/venture-capital#diagnostico-inicial', 'diagnostico-inicial'],
+    ],
+  },
+  {
+    key: 'alianzas-estrategicas', href: '/alianzas-estrategicas', items: [
+      ['/alianzas-estrategicas#asesoria-usa', 'asesoria-usa'],
+      ['/alianzas-estrategicas#representacion-legal', 'representacion-legal'],
+      ['/alianzas-estrategicas#cfo-on-demand', 'cfo-on-demand'],
+    ],
+  },
+  { key: 'nuestro-equipo', href: '/nuestro-equipo', items: [] },
+];
+
+export default function Navbar({ linkColor = '', logoType = '' } = {}) {
+  // Retained as optional legacy props so existing page calls remain source-compatible.
+  void linkColor;
+  void logoType;
   const [menuOpen, setMenuOpen] = useState(false);
-  const [subMenuOpen, setSubMenuOpen] = useState(null);
-  const [isMobileView, setIsMobileView] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false); 
-  const [isVisible, setIsVisible] = useState(false); 
-  const { i18n } = useTranslation();
-  const currentLocale = i18n.language;
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [navVisible, setNavVisible] = useState(true);
+  const headerRef = useRef(null);
+  const navigationResetLockRef = useRef(false);
+  const { t, i18n } = useTranslation('navbar');
+  const pathname = usePathname();
   const router = useRouter();
-  const currentPathname = usePathname();
-  const { t } = useTranslation();
+  const locale = i18n.resolvedLanguage || i18n.language || i18nConfig.defaultLocale;
+
+  const localizedHref = (href) => {
+    const prefix = locale === i18nConfig.defaultLocale && !i18nConfig.prefixDefault ? '' : `/${locale}`;
+    return href === '/' ? (prefix || '/') : `${prefix}${href}`;
+  };
+
+  const categories = useMemo(() => CATEGORY_DEFINITIONS.map((category) => ({
+    ...category,
+    label: t(category.key),
+    items: category.items.map(([href, labelKey], index) => ({
+      href,
+      label: t(labelKey),
+      preview: t(`preview-${labelKey}`),
+      number: String(index + 1).padStart(2, '0'),
+    })),
+  })), [t]);
+
+  const currentCategory = categories.find(({ key }) => key === activeCategory);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobileView(window.innerWidth <= 1200);
-      if (window.innerWidth > 1200) {
-        setMenuOpen(false);
-        setSubMenuOpen(null);
-      }
-    };
+    setMenuOpen(false);
+    setActiveCategory(null);
+    setNavVisible(true);
+  }, [pathname]);
 
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
-    handleResize();
-    handleScroll(); 
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleScroll); 
-
-    setIsVisible(true); 
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll); 
-    };
-  }, []);
-
-  const handleChange = (newLocale) => {
-    const days = 5;
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    const expires = '; expires=' + date.toUTCString();
-    document.cookie = `NEXT_LOCALE=${newLocale};expires=${expires};path=/`;
-
-    if (
-      currentLocale === i18nConfig.defaultLocale &&
-      !i18nConfig.prefixDefault
-    ) {
-      router.push('/' + newLocale + currentPathname);
-    } else {
-      router.push(
-        currentPathname.replace(`/${currentLocale}`, `/${newLocale}`)
-      );
+  useEffect(() => {
+    if (menuOpen) {
+      setNavVisible(true);
+      return undefined;
     }
 
+    let lastScrollY = window.scrollY;
+    const handleScroll = () => {
+      const currentScrollY = Math.max(window.scrollY, 0);
+      const delta = currentScrollY - lastScrollY;
+
+      if (currentScrollY <= 80) {
+        setNavVisible(true);
+      } else if (delta > 5) {
+        setNavVisible(false);
+        setActiveCategory(null);
+      } else if (delta < -5) {
+        setNavVisible(true);
+      }
+
+      if (Math.abs(delta) > 5 || currentScrollY <= 80) lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        setActiveCategory(null);
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
+
+  useEffect(() => {
+    if (!activeCategory) return undefined;
+    const handleOutsideClick = (event) => {
+      if (headerRef.current && !headerRef.current.contains(event.target)) setActiveCategory(null);
+    };
+    document.addEventListener('pointerdown', handleOutsideClick);
+    return () => document.removeEventListener('pointerdown', handleOutsideClick);
+  }, [activeCategory]);
+
+  const changeLocale = (newLocale) => {
+    if (newLocale === locale) return;
+    const expires = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = `NEXT_LOCALE=${newLocale}; expires=${expires}; path=/`;
+
+    const localePattern = new RegExp(`^/(${i18nConfig.locales.join('|')})(?=/|$)`);
+    const pathWithoutLocale = pathname.replace(localePattern, '') || '/';
+    const nextPath = newLocale === i18nConfig.defaultLocale && !i18nConfig.prefixDefault
+      ? pathWithoutLocale
+      : `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+    router.push(nextPath);
     router.refresh();
   };
 
-  const handleLinkClick = (e, index) => {
-    if (isMobileView) {
-      // On mobile, toggle subMenuOpen
-      if (subMenuOpen === index) {
-        setSubMenuOpen(null);
-      } else {
-        e.preventDefault();
-        setSubMenuOpen(index);
-      }
-    }
+  const closeNavigation = () => {
+    setMenuOpen(false);
+    setActiveCategory(null);
+    navigationResetLockRef.current = true;
   };
-
-  const fiscalSubLinks = [
-    { href: '/fiscal/consultoria-fiscal', label: t('navbar:consultoria-fiscal') },
-    { href: '/fiscal/transacciones-financieras', label: t('navbar:transacciones-financieras') },
-    { href: '/fiscal/emisiones-valores', label: t('navbar:emisiones-valores') },
-    { href: '/fiscal/fondos-inversion', label: t('navbar:fondos-inversion') },
-    { href: '/fiscal/proyectos-inversion', label: t('navbar:proyectos-inversion') },
-    { href: '/fiscal/proyectos-infraestructura', label: t('navbar:proyectos-infraestructura') },
-    { href: '/fiscal/reestructuraciones-corp', label: t('navbar:reestructuraciones-corp') },
-    { href: '/fiscal/asesoria-alianzas', label: t('navbar:asesoria-alianzas') },
-    { href: '/fiscal/promociones-fiscales', label: t('navbar:promociones-fiscales') },
-    { href: '/fiscal/due-dilligence', label: t('navbar:due-diligence') },
-    { href: '/fiscal/revision-fiscal', label: t('navbar:revision-fiscal') },
-    { href: '/fiscal/proyectos-energia', label: t('navbar:proyectos-energia') },
-    { href: '/fiscal/dictamenes-fiscales', label: t('navbar:dictamenes-fiscales') },
-  ];
-
-  const legalSubLinks = [
-    { href: '/legal/analisis-preventivo', label: t('navbar:analisis-preventivo') },
-    { href: '/legal/litigio-contencioso', label: t('navbar:litigio-fiscal') },
-    { href: '/legal/litigio-constitucional-fiscal', label: t('navbar:litigio-constitucional') },
-    { href: '/legal/solucion-anticipada-de-controversias', label: t('navbar:solucion-controversias') },
-  ];
-
-  const patrimonialSubLinks = [
-    { href: '/patrimonial/evolucion-familiar', label: t('navbar:evolucion-familiar') },
-    { href: '/patrimonial/trust-book', label: t('navbar:trust-book') },
-    { href: '/patrimonial/family-governance', label: t('navbar:family-governance') },
-    { href: '/patrimonial/planeacion-estructuras', label: t('navbar:planeacion-estructuras') },
-    { href: '/patrimonial/cumplimiento-fiscal', label: t('navbar:cumplimiento-fiscal') },
-    { href: '/patrimonial/procesos-sucesorios', label: t('navbar:procesos-sucesorios') },
-    { href: '/patrimonial/liquidez-familiar', label: t('navbar:liquidez-familiar') },
-    { href: '/patrimonial/nuevas-inversiones', label: t('navbar:nuevas-inversiones') },
-    { href: '/patrimonial/transparency-act', label: t('navbar:transparency-act') },
-  ];
-
-  const ventureSubLinks = [
-    { href: '/venture-capital/estructuracion-inv', label: t('navbar:estructuracion-inv') },
-    { href: '/venture-capital/diagnostico-inicial', label: t('navbar:diagnostico-inicial') },
-  ];
-
-  const alianzasSubLinks = [
-    { href: '/alianzas-estrategicas/asesoria-usa', label: t('navbar:asesoria-usa') },
-    { href: '/alianzas-estrategicas/representacion-legal', label: t('navbar:representacion-legal') },
-    { href: '/alianzas-estrategicas/cfo-on-demand', label: t('navbar:cfo-on-demand') },
-  ];
-
-  const getSubMenuClass = (subLinks) => subLinks.length > 8 ? `${styles.subMenu} ${styles.twoColumn}` : styles.subMenu;
-
-  const getOppositeColor = (color) => {
-    if (color.toLowerCase() === '#cbbaa1') {
-      return '#535E6B';
-    } else if (color.toLowerCase() === '#535e6b') {
-      return '#CBBAA1';
-    } else {
-      return 'transparent';
-    }
-  };
-
-  const backgroundColor = isScrolled ? getOppositeColor(linkColor) : 'transparent';
-
-  const renderSubLinks = (subLinks, index) =>
-    subLinks.map((subLink, idx) => (
-      <Link key={idx} href={subLink.href} className={styles.subLink}>
-        <span className={styles.subLinkText}>{subLink.label}</span>
-        <img src="/svg/f2.svg" alt="icon" className={styles.subLinkIcon}/>
-      </Link>
-    ));
 
   return (
-    <div
-      className={`${styles.navbarContainer} ${isVisible ? styles.navbarVisible : ''}`} style={{ backgroundColor }}>
-      <nav className={styles.navbar}>
-        <div className={styles.logoWrapper}>
-          <Link href="/">
-            <Image src={`/svg/${logoType}`} alt="Logo" width={250} height={50} className={styles.navbarLogo} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} />
+    <header
+      ref={headerRef}
+      className={`${styles.navbarContainer} ${navVisible || menuOpen ? '' : styles.navbarHidden}`}
+      onPointerLeave={() => {
+        navigationResetLockRef.current = false;
+        setActiveCategory(null);
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          navigationResetLockRef.current = false;
+          setActiveCategory(null);
+        }
+      }}
+    >
+      <div className={styles.announcement}>{t('announcement')}</div>
+      <div className={styles.navigationRow}>
+        <Link href={localizedHref('/')} className={styles.logoLink} aria-label="MMYO">
+          <Image src="/svg/logo.svg" alt="Muñoz Manzo & Ocampo" width={226} height={50} className={styles.logo} priority />
+        </Link>
+
+        <nav className={styles.desktopNavigation} aria-label={t('primary-navigation')}>
+          {categories.map((category) => (
+            <div
+              className={styles.desktopItem}
+              key={category.key}
+              onMouseEnter={() => {
+                if (!category.items.length) setActiveCategory(null);
+                else if (!navigationResetLockRef.current) setActiveCategory(category.key);
+              }}
+              onFocus={() => {
+                if (!category.items.length) setActiveCategory(null);
+                else if (!navigationResetLockRef.current) setActiveCategory(category.key);
+              }}
+            >
+              {category.items.length > 0 ? (
+                <Link
+                  href={localizedHref(category.href)}
+                  className={`${styles.primaryLink} ${activeCategory === category.key ? styles.primaryLinkActive : ''}`}
+                  aria-haspopup="true"
+                  aria-expanded={activeCategory === category.key}
+                  onClick={closeNavigation}
+                >
+                  {category.label}
+                </Link>
+              ) : (
+                <Link href={localizedHref(category.href)} className={styles.primaryLink} onClick={closeNavigation}>{category.label}</Link>
+              )}
+              {category.items.length > 0 && activeCategory === category.key && (
+                <div className={styles.hoverBridge}>
+                  <MegaMenu
+                    key={category.key}
+                    category={category}
+                    localizedHref={localizedHref}
+                    t={t}
+                    onClose={closeNavigation}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+
+        <div className={styles.desktopActions}>
+          <LanguageSwitcher locale={locale} onChange={changeLocale} />
+          <Link href={localizedHref('/contacto')} className={styles.contactButton}>{t('contact')}</Link>
+        </div>
+
+        <button
+          type="button"
+          className={styles.menuToggle}
+          aria-label={menuOpen ? t('close-menu') : t('open-menu')}
+          aria-expanded={menuOpen}
+          onClick={() => {
+            setMenuOpen((open) => !open);
+            setActiveCategory(null);
+          }}
+        >
+          {menuOpen ? <span className={styles.closeGlyph}>×</span> : <span className={styles.menuGlyph}><i /><i /></span>}
+        </button>
+      </div>
+
+      {menuOpen && (
+        <div className={styles.mobilePanel}>
+          {!currentCategory ? (
+            <div className={styles.mobileMenuBody}>
+              <p className={styles.mobileEyebrow}>{t('menu-level-one')}</p>
+              <div className={styles.mobileCategoryList}>
+                {categories.map((category, index) => (
+                  <div className={styles.mobileCategoryRow} key={category.key}>
+                    <Link
+                      href={localizedHref(category.href)}
+                      className={`${styles.mobileCategory} ${category.items.length ? '' : styles.mobileCategoryDirect}`}
+                      onClick={closeNavigation}
+                    >
+                      <span className={styles.mobileCategoryLabel}>
+                        <span className={styles.mobileIndex}>{String(index + 1).padStart(2, '0')}</span>
+                        <span>{category.label}</span>
+                      </span>
+                      {!category.items.length && <span aria-hidden="true">↗</span>}
+                    </Link>
+                    {category.items.length > 0 && (
+                      <button
+                        type="button"
+                        className={styles.mobileCategoryDrilldown}
+                        aria-label={`${category.label}: ${t('services-count', { count: category.items.length })}`}
+                        onClick={() => setActiveCategory(category.key)}
+                      >
+                        <span aria-hidden="true">→</span>
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className={styles.mobileMenuFooter}>
+                <Link href={localizedHref('/contacto')} className={styles.mobileContactButton} onClick={closeNavigation}>
+                  <span>{t('contact')}</span><span aria-hidden="true">↗</span>
+                </Link>
+                <LanguageSwitcher locale={locale} onChange={changeLocale} />
+              </div>
+            </div>
+          ) : (
+            <div className={styles.mobileMenuBody}>
+              <button type="button" className={styles.backButton} onClick={() => setActiveCategory(null)}>
+                <span aria-hidden="true">←</span><span>{t('menu-back', { category: currentCategory.label })}</span>
+              </button>
+              <div className={styles.mobileCategoryHeading}>
+                <h2>{currentCategory.label}</h2>
+                <Link href={localizedHref(currentCategory.href)} onClick={closeNavigation}>{t('view-all')} ↗</Link>
+              </div>
+              <div className={styles.mobileServiceList}>
+                {currentCategory.items.map((item) => (
+                  <Link href={localizedHref(item.href)} key={item.href} onClick={closeNavigation}>
+                    <span>{item.label}</span><span aria-hidden="true">→</span>
+                  </Link>
+                ))}
+              </div>
+              <Link href={localizedHref('/contacto')} className={styles.mobileContactButton} onClick={closeNavigation}>
+                <span>{t('contact')}</span><span aria-hidden="true">↗</span>
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+    </header>
+  );
+}
+
+function MegaMenu({ category, localizedHref, t, onClose }) {
+  const [previewService, setPreviewService] = useState(null);
+  const splitAt = Math.ceil(category.items.length / 2);
+  const columns = [category.items.slice(0, splitAt), category.items.slice(splitAt)];
+
+  return (
+    <div className={styles.megaMenu}>
+      <div className={styles.megaIntro}>
+        <span className={styles.megaLabel}>{t('level-one')}</span>
+        <h2>{category.label}</h2>
+        <span className={styles.serviceCount}>{t('services-count', { count: category.items.length })}</span>
+        <Link href={localizedHref(category.href)} onClick={onClose}>{t('view-all')} ↗</Link>
+      </div>
+      {columns.map((items, columnIndex) => items.length > 0 && (
+        <div className={styles.megaColumn} key={columnIndex}>
+          <span className={styles.megaLabel}>{t('services-range', {
+            start: String(columnIndex === 0 ? 1 : splitAt + 1).padStart(2, '0'),
+            end: String(columnIndex === 0 ? splitAt : category.items.length).padStart(2, '0'),
+          })}</span>
+          {items.map((item) => (
+            <Link
+              href={localizedHref(item.href)}
+              key={item.href}
+              onClick={onClose}
+              onMouseEnter={() => setPreviewService(item)}
+              onFocus={() => setPreviewService(item)}
+            >
+              <span>{item.label}</span><span aria-hidden="true">↗</span>
+            </Link>
+          ))}
+        </div>
+      ))}
+      <div className={styles.megaContext}>
+        <div className={styles.megaContextContent} key={previewService?.href || 'category-overview'}>
+          <span className={styles.megaLabel}>
+            {previewService
+              ? t('service-preview-label', { category: category.label, number: previewService.number })
+              : t('context-label')}
+          </span>
+          <h3>{previewService?.label || t('context-copy')}</h3>
+          {previewService && <p>{previewService.preview}</p>}
+          <Link
+            href={localizedHref(previewService?.href || '/contacto')}
+            onClick={onClose}
+          >
+            {previewService ? t('go-to-service') : t('contact')} ↗
           </Link>
         </div>
-        <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)} style={{ color: linkColor }}>
-          ☰
-        </button>
-        <div className={`${styles.linksWrapper} ${menuOpen ? styles.open : ''}`}>
-          <button className={styles.closeButton} onClick={() => setMenuOpen(false)}>
-            ✕
-          </button>
-          <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
-            <div className={styles.link}>
-              <Link href="/fiscal" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 0)}>
-                {t('navbar:fiscal')}
-              </Link>
-            </div>
-            <div className={`${getSubMenuClass(fiscalSubLinks)} ${(subMenuOpen === 0 && isMobileView) || (!isMobileView && subMenuOpen === 0) ? styles.open : ''}`}>
-              {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:fiscal')}</div>}
-              {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {renderSubLinks(fiscalSubLinks, 0)}
-            </div>
-          </div>
-          <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
-            <div className={styles.link}>
-              <Link href="/legal" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 1)}>
-                {t('navbar:legal')}
-              </Link>
-            </div>
-            <div className={`${getSubMenuClass(legalSubLinks)} ${(subMenuOpen === 1 && isMobileView) || (!isMobileView && subMenuOpen === 1) ? styles.open : ''}`}>
-              {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:legal')}</div>}
-              {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {renderSubLinks(legalSubLinks, 1)}
-            </div>
-          </div>
-          <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
-            <div className={styles.link}>
-              <Link href="/patrimonial" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 2)}>
-                {t('navbar:patrimonial')}
-              </Link>
-            </div>
-            <div className={`${getSubMenuClass(patrimonialSubLinks)} ${(subMenuOpen === 2 && isMobileView) || (!isMobileView && subMenuOpen === 2) ? styles.open : ''}`}>
-              {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:patrimonial')}</div>}
-              {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {renderSubLinks(patrimonialSubLinks, 2)}
-            </div>
-          </div>
-          <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
-            <div className={styles.link}>
-              <Link href="/venture-capital" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 3)}>
-                {t('navbar:venture-capital')}
-              </Link>
-            </div>
-            <div className={`${getSubMenuClass(ventureSubLinks)} ${(subMenuOpen === 3 && isMobileView) || (!isMobileView && subMenuOpen === 3) ? styles.open : ''}`}>
-              {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:venture-capital')}</div>}
-              {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {renderSubLinks(ventureSubLinks, 3)}
-            </div>
-          </div>
-          <div className={`${styles.linkWrapper} ${isMobileView ? '' : styles.hoverEffect}`}>
-            <div className={styles.link}>
-              <Link href="/alianzas-estrategicas" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 4)}>
-                {t('navbar:alianzas-estrategicas')}
-              </Link>
-            </div>
-            <div className={`${getSubMenuClass(alianzasSubLinks)} ${(subMenuOpen === 4 && isMobileView) || (!isMobileView && subMenuOpen === 4) ? styles.open : ''}`}>
-              {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:alianzas-estrategicas')}</div>}
-              {!isMobileView && <div className={styles.subMenuDivider}></div>}
-              {renderSubLinks(alianzasSubLinks, 4)}
-            </div>
-          </div>
-          <div className={styles.linkWrapper}>
-            <div className={styles.link}>
-              <Link href="/nuestro-equipo" className={styles.link} style={{ color: isMobileView ? '#CBBAA1' : linkColor }} onClick={(e) => handleLinkClick(e, 5)}>
-                {t('navbar:nuestro-equipo')}
-              </Link>
-            </div>
-            <div className={`${styles.subMenu} ${(subMenuOpen === 5 && isMobileView) || (!isMobileView && subMenuOpen === 5) ? styles.open : ''}`}>
-              {!isMobileView && <div className={styles.subMenuHeader}>{t('navbar:nuestro-equipo')}</div>}
-              {!isMobileView && <div className={styles.subMenuDivider}></div>}
-            </div>
-          </div>
-          <div className={styles.languageSwitcher}>
-            <button className={styles.button} onClick={() => handleChange('en')} style={{ color: isMobileView ? '#CBBAA1' : linkColor }}>EN</button>
-            <button className={styles.button} onClick={() => handleChange('es')} style={{ color: isMobileView ? '#CBBAA1' : linkColor }}>ES</button>
-          </div>
-        </div>
-      </nav>
+      </div>
+    </div>
+  );
+}
+
+function LanguageSwitcher({ locale, onChange }) {
+  return (
+    <div className={styles.languageSwitcher} aria-label="Language selector">
+      <button type="button" className={locale === 'en' ? styles.activeLanguage : ''} onClick={() => onChange('en')}>EN</button>
+      <span>|</span>
+      <button type="button" className={locale === 'es' ? styles.activeLanguage : ''} onClick={() => onChange('es')}>ES</button>
     </div>
   );
 }

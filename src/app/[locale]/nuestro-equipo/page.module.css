@@ -1,427 +1,99 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
-
 .main {
-    display: flex;
-    flex-direction: column;
+  --blue: var(--mmyo-deep-blue, #272e37);
+  --gold: var(--mmyo-sand, #cbbaa1);
+  display: flex;
+  flex-direction: column;
+  padding-top: 112px;
+  color: var(--blue);
+  background: var(--gold);
 }
 
-.header {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 50vh;
-    background-color: #CBBAA1;
-    background-size: cover;
-    background-position: center;
-    background-image: url('/images/equipo.webp');
-}
+.hero { display: flex; min-height: 480px; flex-direction: column; justify-content: space-between; padding: 56px 64px 48px; background: var(--gold); box-sizing: border-box; }
+.heroTop { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 688px); gap: 64px; }
+.heroTitle p, .practiceMessage > p, .recruitment > div > p, .sectionHeader > p { margin: 0; font-size: 10px; font-weight: 500; line-height: 1.4; letter-spacing: .14em; text-transform: uppercase; }
+.heroTitle h1 { margin: 26px 0 0; font-size: clamp(54px, 5vw, 72px); font-weight: 200; line-height: 1.08; letter-spacing: -.04em; }
+.heroIntro { align-self: start; max-width: 650px; margin: 48px 0 0; font-size: 27px; font-weight: 300; line-height: 1.42; letter-spacing: -.025em; }
+.heroRule, .sectionRule { width: 100%; height: 1px; background: var(--blue); }
+.heroFacts { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.heroFacts p { margin: 0; font-size: 10px; font-weight: 400; line-height: 1.5; letter-spacing: .1em; text-transform: uppercase; }
 
-/* Animate the headerContainer with fadeInUp */
-.headerContainer {
-    background-color: #535E6B;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 900px;
-    width: 100%;
-    padding: 4rem;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease-in forwards;
-}
+.partnersSection, .associatesSection { padding: 96px 64px; background: var(--gold); }
+.sectionHeader { display: flex; min-height: 112px; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.sectionHeader h2 { margin: 0; font-size: 56px; font-weight: 200; line-height: 1.08; letter-spacing: -.035em; }
+.sectionHeader > p { padding-bottom: 7px; }
+.sectionRule { margin: 64px 0; opacity: .74; }
+.featuredPartners { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; }
+.partnerGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 56px; margin-top: 64px; }
+.partnerCard { min-width: 0; }
+.portrait { position: relative; width: 100%; aspect-ratio: 286 / 350; overflow: hidden; background: var(--blue); }
+.featuredPartner .portrait { aspect-ratio: 405 / 450; }
+.portraitImage { object-fit: cover; filter: saturate(.86) contrast(.98); transition: transform 700ms cubic-bezier(.22, 1, .36, 1), filter 350ms ease; }
+.partnerCard:hover .portraitImage { transform: scale(1.018); filter: saturate(1) contrast(1); }
+.partnerCard h3 { display: flex; gap: 12px; margin: 10px 0 0; font-size: 17px; font-weight: 300; line-height: 1.35; letter-spacing: -.015em; }
+.featuredPartner h3 { font-size: 20px; }
+.partnerCard h3 span { flex: 0 0 auto; font-size: 10px; font-weight: 500; line-height: 2.3; letter-spacing: .04em; }
+.partnerCard > p { margin: 7px 0 0; font-size: 9px; font-weight: 500; line-height: 1.5; letter-spacing: .11em; text-transform: uppercase; }
 
-.header h1 {
-    font-family: 'Inter', sans-serif;
-    color: #CBBAA1;
-    font-weight: 300;
-    font-size: 4rem;
-    text-align: left;
-    width: 100vw;
-    margin: 0;
-    max-width: 40vw;
-}
+.practiceBand { display: flex; min-height: 560px; align-items: center; justify-content: space-between; gap: 72px; padding: 96px 64px; color: var(--gold); background: var(--blue); box-sizing: border-box; }
+.practiceMessage { max-width: 790px; }
+.practiceMessage h2 { max-width: 790px; margin: 36px 0 0; font-size: clamp(44px, 4.05vw, 58px); font-weight: 200; line-height: 1.1; letter-spacing: -.035em; white-space: pre-line; }
+.disciplineIndex { width: min(310px, 28vw); }
+.disciplineIndex ol { margin: 0; padding: 0; list-style: none; }
+.disciplineIndex li { display: flex; gap: 28px; font-size: 17px; font-weight: 300; line-height: 42px; }
+.disciplineIndex li span { width: 22px; font-size: 10px; font-weight: 500; letter-spacing: .06em; }
+.disciplineIndex > p { margin: 28px 0 0; font-size: 13px; font-weight: 300; line-height: 1.7; }
 
-.buttonContainer {
-    width: 55vw;
-    transform: translateX(-20%);
-    display: flex;
-    justify-content: flex-end;
-}
+.associatesSection { padding-bottom: 112px; }
+.associateGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; }
+.associateRow { display: grid; min-height: 72px; grid-template-columns: 32px minmax(180px, 1fr) minmax(132px, .62fr); gap: 16px; align-items: center; border-bottom: 1px solid var(--blue); }
+.associateIndex { font-size: 10px; font-weight: 500; opacity: .65; }
+.associateRow h3 { margin: 0; font-size: 16px; font-weight: 300; line-height: 1.4; letter-spacing: -.01em; }
+.associateRow p { margin: 0; font-size: 9px; font-weight: 500; line-height: 1.35; letter-spacing: .06em; text-transform: uppercase; }
 
-.headerButton {
-    background-color: #BDC1C6;
-    color: #535E6B;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: .7rem;
-    text-align: right;
-    padding: 1rem;
-    text-decoration: none;
-    width: 100%;
-    box-sizing: border-box;
-    text-transform: uppercase;
-}
-
-.headerButton:hover {
-    text-decoration: underline;
-}
-
-.logo {
-    padding: 2rem;
-    position: relative;
-}
-
-.homeContent {
-    max-width: 1200px;
-    margin: auto;
-    padding: 2rem;
-    padding-bottom: 4rem;
-}
-
-.headerText {
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: 1rem;
-    color: #ffffff;
-    line-height: 2.2rem;
-    max-width: 100%;
-    padding-top: 2rem;
-    line-height: 2rem;
-}
-
-.p1 {
-    transform: translateY(-50%);
-    padding-left: 8rem;
-}
-
-.p1 h2 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: 1.5rem;
-    color: #535E6B;
-    line-height: 2.2rem;
-}
-
-.textContainer {
-    width: 60%;
-}
-
-.p2 {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 6rem;
-    padding-bottom: 4rem;
-}
-
-.p2textContainer {
-    width: 60%;
-    text-align: left;
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: 1.5rem;
-    color: #535E6B;
-    line-height: 2.5rem;
-}
-
-.homeTitle h3 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 4rem;
-    color: #535E6B;
-    margin: 0;
-    padding-top: 4rem;
-}
-
-.horizontalLine {
-    width: 100%;
-    height: .5px;
-    background-color: #ffffff90;
-    border: none;
-    margin-top: 2rem;
-    align-self: flex-start;
-    margin-left: 0;
-}
-
-.homeLink h3 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: 4rem;
-    color: #535E6B;
-    margin: 0;
-    text-decoration: underline;
-    padding-top: 4rem;
-    padding-bottom: 8rem;
-    cursor: pointer;
-    max-width: 20vw;
-}
-
-.contentTitles {
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: 3.5rem;
-    color: #CBBAA1;
-    margin: 0;
-    padding-top: 2rem;
-}
-
-.imageContainer {
-    position: relative; 
-    width: 100%;
-    height: auto;
-}
-
-/* Background image behind everything else */
-.bgImage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; 
-    height: 100%;
-    object-fit: cover;
-    z-index: 0; /* behind teamGrid */
-    opacity: .4;
-}
-
-/* teamGrid above the bgImage */
-.teamGrid {
-    position: relative;
-    z-index: 1;
-    max-width: 1200px;
-    margin: auto;
-    padding-bottom: 4rem;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease-in forwards 0.5s;
-}
-
-.gridContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.gridItem {
-    padding: 2rem;
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.name {
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    font-size: .9rem;
-    color: #535E6B;
-    margin: 1rem 0;
-    position: relative;
-}
-
-.position {
-    font-family: 'Inter', sans-serif;
-    font-weight: 200;
-    font-size: .8rem;
-    color: #535E6B;
-    margin: 1rem 0;
-}
-
-.linkedinLink {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
-    color: #CBBAA1;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.linkedinLink:hover {
-    text-decoration: underline;
-}
-
-/* .imageWrapper: show on hover */
-.imageWrapper {
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translate(-50%, 10px); /* Start slightly below */
-    opacity: 0;
-    transition: opacity 0.3s ease-in, transform 0.3s ease-in;
-    max-width: 200px;
-    width: 100%;
-    z-index: 2; /* Above teamGrid and bgImage */
-    text-align: left;
-    margin-top: 10px;
-}
-
-.gridItem:hover .imageWrapper {
-    opacity: 1;
-    transform: translate(-82%, 100%); /* Move image up by 10px */
-    z-index: 3;
-}
-
-.image {
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    z-index: 4;
-}
-
-/* Keyframes for fadeInUp animation */
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+.recruitment { display: flex; min-height: 420px; align-items: center; justify-content: space-between; gap: 64px; padding: 96px 64px; border-top: 1px solid var(--blue); background: var(--gold); box-sizing: border-box; }
+.recruitment h2 { margin: 20px 0 0; font-size: 48px; font-weight: 200; line-height: 1.12; letter-spacing: -.035em; }
+.recruitmentLink { display: flex; width: min(360px, 32vw); min-height: 72px; align-items: center; justify-content: space-between; border-block: 1px solid var(--blue); color: var(--blue); font-size: 18px; font-weight: 300; text-decoration: none; transition: padding 200ms ease; }
+.recruitmentLink:hover, .recruitmentLink:focus-visible { padding-inline: 8px; }
 
 @media (max-width: 1200px) {
-    .logoContainer img {
-        width: 400px !important;
-        height: 543px !important;
-    }
-
-    .headerContainer {
-        background-color: #535E6B;
-                
-    }
-
-    .header h1 {
-        font-size: 3rem;
-        text-align: left;
-        max-width: 90vw;
-    }
-
-    .headerText {
-        font-size: 1rem;
-        line-height: 2rem;
-        padding-top: 1.5rem;
-        line-height: 1.5rem;
-    }
+  .main { padding-top: 96px; }
+  .heroTop { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 40px; }
+  .featuredPartners, .partnerGrid { gap: 24px; }
+  .associateGrid { column-gap: 36px; }
+  .associateRow { grid-template-columns: 28px minmax(160px, 1fr); gap: 12px; padding-block: 14px; }
+  .associateRow p { grid-column: 2; }
 }
 
-@media (max-width: 768px) {
-    .gridContainer {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .header h1 {
-        font-size: 2rem;
-        text-align: left;
-        max-width: 90vw;
-    }
-
-    .homeTitle h3 {
-        font-size: 3rem;
-        padding-top: 4rem;
-        padding-left: 1rem;
-    }
+@media (max-width: 700px) {
+  .hero { min-height: 480px; padding: 28px 24px; }
+  .heroTop { display: flex; flex-direction: column; gap: 20px; }
+  .heroTitle h1 { margin-top: 18px; font-size: 44px; line-height: 1.1; }
+  .heroIntro { margin: 0; font-size: 18px; line-height: 1.48; }
+  .heroFacts { flex-direction: column; gap: 6px; }
+  .partnersSection, .associatesSection { padding: 64px 24px; }
+  .sectionHeader { min-height: 72px; }
+  .sectionHeader h2 { font-size: 42px; }
+  .sectionHeader > p { max-width: 86px; padding-bottom: 5px; text-align: right; }
+  .sectionRule { margin: 32px 0; }
+  .featuredPartners, .partnerGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 16px; }
+  .partnerGrid { margin-top: 32px; }
+  .portrait, .featuredPartner .portrait { aspect-ratio: 163 / 210; }
+  .partnerCard h3, .featuredPartner h3 { gap: 7px; margin-top: 7px; font-size: 14px; line-height: 1.25; }
+  .partnerCard h3 span { font-size: 8px; line-height: 1.8; }
+  .partnerCard > p { margin-top: 6px; font-size: 8px; }
+  .practiceBand { min-height: 540px; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 40px; padding: 48px 24px; }
+  .practiceMessage h2 { margin-top: 52px; font-size: 40px; line-height: 1.1; }
+  .disciplineIndex { width: 100%; padding-top: 40px; border-top: 1px solid var(--gold); }
+  .disciplineIndex > p { display: none; }
+  .associateGrid { grid-template-columns: 1fr; }
+  .associateRow { min-height: 84px; grid-template-columns: 24px minmax(0, 1fr) 92px; gap: 12px; padding: 0; }
+  .associateRow h3 { font-size: 14px; line-height: 1.3; }
+  .associateRow p { grid-column: auto; font-size: 8px; text-align: right; }
+  .recruitment { min-height: 420px; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 48px; padding: 48px 24px; }
+  .recruitment h2 { margin-top: 68px; font-size: 40px; }
+  .recruitmentLink { width: 100%; min-height: 72px; font-size: 17px; }
 }
 
-@media (max-width: 900px) {
-    .headerContainer {
-        max-width: 80%;
-    }
-
-    .logoContainer {
-        display: none;
-    }
-
-    .headerText {
-        max-width: 90%;
-        padding-top: .5rem;
-        line-height: 2rem;
-    }
-
-    .homeContent {
-        padding: 2rem;
-        padding-bottom: 2rem;
-    }
-
-    .contentTitles {
-        font-size: 3.5rem;
-        color: #CBBAA1;
-        margin: 0;
-        padding-top: 0rem;
-    }
-
-    .homeLink h3 {
-        max-width: 90vw;
-    }
-}
-
-@media (max-width: 500px) {
-    .gridContainer {
-        grid-template-columns: repeat(1, 1fr);
-    }
-
-    .horizontalLine {
-        margin-top: 1rem;
-    }
-}
-
-@media (max-width: 425px) {
-    .header {
-        height: 55vh;
-    }
-
-    .headerContainer {
-        padding: 1rem;
-    }
-
-    .header h1 {
-        font-size: 1.5rem;
-    }
-
-    .headerText {
-        font-size: .8rem;
-        line-height: 1.2rem;
-        padding-top: 1.5rem;
-        line-height: 1.5rem;
-    }
-
-    
-}
-
-@media (max-width: 320px) {
-
-    .header {
-        height: 65vh;
-    }
-
-    .headerText {
-        line-height: 1.2rem;
-        padding-top: 1rem;
-        line-height: 1.2rem;
-    }
-
-    .headerContainer {
-        padding: .5rem;
-    }
-
-    .contentTitles {
-        font-size: 3rem;
-        padding-top: 0rem;
-    }
-
-    .p2textContainer {
-        width: 90%;
-        font-size: 1rem;
-        line-height: 1.8rem;
-    }
-
-    .p2 {
-        padding-top: 2rem;
-        padding-bottom: 1rem;
-    }
-
-    .homeLink h3 {
-        font-size: 2rem;
-        padding-top: 1rem;
-        padding-bottom: 2rem;
-    }
+@media (prefers-reduced-motion: reduce) {
+  .portraitImage, .recruitmentLink { transition: none; }
 }

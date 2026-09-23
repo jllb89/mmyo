@@ -1,0 +1,9 @@
+.reveal { width: 100%; overflow: hidden; }
+.blue { background: var(--mmyo-deep-blue, #272e37); }
+.sand { background: var(--mmyo-sand, #cbbaa1); }
+.reveal > * { opacity: 0; transform: translateY(12px); transition: opacity 520ms ease var(--reveal-delay), transform 620ms cubic-bezier(.22, 1, .36, 1) var(--reveal-delay); }
+.visible > * { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal > * { opacity: 1; transform: none; transition: none; }
+}

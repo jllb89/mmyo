@@ -1,88 +1,105 @@
+import Link from 'next/link';
 import initTranslations from '../../i18n';
 import TranslationsProvider from '../../../components/TranslationsProvider';
 import Navbar from '../../../components/Navbar';
 import MailingList from '../../../components/MailingList';
 import Footer from '../../../components/Footer';
 import Team from '../../../components/Team';
+import SectionReveal from '../../../components/SectionReveal';
 import styles from './page.module.css';
-import Link from 'next/link';
-import Image from 'next/image';
 
 const i18nNamespaces = ['nuestro-equipo', 'common'];
 
-export default async function Home({ params: { locale } }: { params: { locale: string } }) {
+export default async function TeamPage({ params: { locale } }: { params: { locale: string } }) {
   const { t, resources } = await initTranslations(locale, [
-    'nuestro-equipo',
-    'common',
-    'navbar',
-    'mailing-list',
-    'footer',
-    'home'
+    'nuestro-equipo', 'common', 'navbar', 'mailing-list', 'footer',
   ]);
 
   const socios = [
-    { name: 'Alejo Muñoz Manzo', position: t('socio-fundador'), linkedin: 'https://linkedin.com/in/johndoe', image: '/images/MM.png' },
-    { name: 'Eduardo Ocampo Gayón', position: t('socio-fundador'), linkedin: 'https://linkedin.com/in/janesmith', image: '/images/eduardo.webp' },
-    { name: 'Gerardo Napolitano Pompa', position: t('socio'), linkedin: 'https://linkedin.com/in/jimbrown', image: '/images/gerardo.webp' },
-    { name: 'Federico Groenewold Rivas', position: t('socio'), linkedin: 'https://linkedin.com/in/johndoe', image: '/images/fede.webp' },
-    { name: 'Gyselle San Martín', position: t('socio-fundador'), linkedin: 'https://linkedin.com/in/janesmith', image: '/images/gsm.webp' },
-    { name: 'Ma. Elena Paredes Sánchez', position: t('socio'), linkedin: 'https://linkedin.com/in/jimbrown', image: '/images/elena.webp' },
-    { name: 'Daniel M. Ramírez Robles', position: t('socio-fundador'), linkedin: 'https://linkedin.com/in/janesmith', image: '/images/daniel.webp' },
+    { name: 'Alejo Muñoz Manzo', position: t('socio-fundador'), image: '/images/MM.png' },
+    { name: 'Eduardo Ocampo Gayón', position: t('socio-fundador'), image: '/images/eduardo.webp' },
+    { name: 'Gerardo Napolitano Pompa', position: t('socio'), image: '/images/gerardo.webp' },
+    { name: 'Federico Groenewold Rivas', position: t('socio'), image: '/images/fede.webp' },
+    { name: 'Gyselle San Martín', position: t('socio-fundador'), image: '/images/gsm.webp' },
+    { name: 'Ma. Elena Paredes Sánchez', position: t('socio'), image: '/images/elena.webp' },
+    { name: 'Daniel M. Ramírez Robles', position: t('socio-fundador'), image: '/images/daniel.webp' },
   ];
 
   const asociados = [
-    { name: 'Mayanin Bello Carranza', position: t('consultor'), linkedin: 'https://linkedin.com/in/lisawhite', image: '/images/mayanin.webp' },
-    { name: 'Ana María Caballero Rosetti', position: t('asociada'), linkedin: 'https://linkedin.com/in/tomgreen', image: '/images/ana.webp' },
-    { name: 'Gabriela Castillo Soriano', position: t('asociada-area-patrimonial'), linkedin: 'https://linkedin.com/in/sarablack', image: '/images/gaby.webp' },
-    { name: 'José Arturo Flores Graue', position: t('gerente'), linkedin: 'https://linkedin.com/in/ninared', image: '/images/arturo.webp' },
-    { name: 'Jocelyn Mariana García Martínez', position: t('asociada'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/jocelyn.webp' },
+    { name: 'Mayanin Bello Carranza', position: t('consultor') },
+    { name: 'Ana María Caballero Rosetti', position: t('asociada') },
+    { name: 'Gabriela Castillo Soriano', position: t('asociada-area-patrimonial') },
+    { name: 'José Arturo Flores Graue', position: t('gerente') },
+    { name: 'Jocelyn Mariana García Martínez', position: t('asociada') },
     { name: 'Melanie García Gallardo', position: t('gerente') },
-    { name: 'Moisés Godinez Hernández', position: t('asociado'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/moises.webp' },
+    { name: 'Moisés Godinez Hernández', position: t('asociado') },
     { name: 'Larissa González García', position: t('gerente') },
     { name: 'Erick Johan Hernández Pérez', position: t('gerente') },
-    { name: 'Lizeth Adriana Hernández Aguirre', position: t('asociada'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/lizeth.webp' },
+    { name: 'Lizeth Adriana Hernández Aguirre', position: t('asociada') },
     { name: 'Sergio Abraham Jiménez Villeda', position: t('gerente') },
-    { name: 'Raúl Iván Martínez González Vega', position: t('asociado'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/raul.webp' },
-    { name: 'Ilse Gabriela Moreno López', position: t('asociada-area-patrimonial'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/ilse.webp' },
-    { name: 'José Mario Pereda Valdez', position: t('asociado'), linkedin: 'https://linkedin.com/in/paulyellow', image: '/images/jose.webp' },
+    { name: 'Raúl Iván Martínez González Vega', position: t('asociado') },
+    { name: 'Ilse Gabriela Moreno López', position: t('asociada-area-patrimonial') },
+    { name: 'José Mario Pereda Valdez', position: t('asociado') },
   ];
 
-  const sociosTitle = t("socios");
-  const asociadosTitle = t("asociados");
-
   return (
-    <TranslationsProvider
-      resources={resources}
-      locale={locale}
-      namespaces={i18nNamespaces}
-    >
+    <TranslationsProvider resources={resources} locale={locale} namespaces={i18nNamespaces}>
       <main className={styles.main}>
-        <Navbar linkColor="#535E6B" logoType="logo2.svg" />
-        <div className={styles.header}>
-          <div className={styles.headerContainer}>
-            <h1>{t("title")}</h1>
-            <h2 className={styles.headerText}>{t("header")}</h2>
-            <hr className={styles.horizontalLine} />
+        <Navbar />
+
+        <section className={styles.hero}>
+          <div className={styles.heroTop}>
+            <div className={styles.heroTitle}>
+              <p>{t('hero-eyebrow')}</p>
+              <h1>{t('title')}</h1>
+            </div>
+            <p className={styles.heroIntro}>{t('hero-intro')}</p>
           </div>
-        </div>
-        <div className={styles.buttonContainer}>
-          <Link href="#your-link" className={styles.headerButton}>
-            {t("button")}
-          </Link>
-        </div>
-        <div className={styles.imageContainer}>
-          {/* Background image first */}
-          <Image src="/svg/l3.svg" alt="team" width={2000} height={2000} className={styles.bgImage} />
-          {/* teamGrid next so it stacks above the bgImage naturally */}
-          <div className={styles.teamGrid}>
-            <Team
-              socios={socios}
-              asociados={asociados}
-              sociosTitle={sociosTitle}
-              asociadosTitle={asociadosTitle}
-            />
+          <div className={styles.heroRule} />
+          <div className={styles.heroFacts}>
+            <p>{t('hero-roster')}</p>
+            <p>{t('hero-disciplines')}</p>
           </div>
-        </div>
+        </section>
+
+        <SectionReveal tone="sand">
+          <Team socios={socios} asociados={[]} sociosTitle={t('socios')} asociadosTitle={t('asociados')} leadershipLabel={t('leadership')} teamLabel={t('team-label')} />
+        </SectionReveal>
+
+        <SectionReveal tone="blue">
+          <section className={styles.practiceBand}>
+            <div className={styles.practiceMessage}>
+              <p>{t('practice-eyebrow')}</p>
+              <h2>{t('practice-statement')}</h2>
+            </div>
+            <div className={styles.disciplineIndex}>
+              <ol>
+                <li><span>01</span>{t('discipline-fiscal')}</li>
+                <li><span>02</span>{t('discipline-patrimonial')}</li>
+                <li><span>03</span>{t('discipline-business')}</li>
+              </ol>
+              <p>{t('practice-context')}</p>
+            </div>
+          </section>
+        </SectionReveal>
+
+        <SectionReveal tone="sand">
+          <Team socios={[]} asociados={asociados} sociosTitle={t('socios')} asociadosTitle={t('asociados')} leadershipLabel={t('leadership')} teamLabel={t('team-label')} />
+        </SectionReveal>
+
+        <SectionReveal tone="sand">
+          <section className={styles.recruitment}>
+            <div>
+              <p>{t('talent-eyebrow')}</p>
+              <h2>{t('recruitment-question')}</h2>
+            </div>
+            <Link href={`/${locale}/trabaja-con-nosotros`} className={styles.recruitmentLink}>
+              <span>{t('trabaja-con-nosotros')}</span>
+              <span aria-hidden="true">↗</span>
+            </Link>
+          </section>
+        </SectionReveal>
+
         <MailingList />
         <Footer />
       </main>

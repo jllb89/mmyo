@@ -1,12 +1,24 @@
 {
-    "form-button": "SEND REQUEST",
+    "eyebrow": "TALENT / MMYO",
+    "meta-left": "PEOPLE WITH JUDGMENT AND CURIOSITY",
+    "meta-right": "MEXICO CITY / OPPORTUNITIES",
+    "application-eyebrow": "JOIN THE TEAM",
+    "application-title": "We want to understand how you think.",
+    "application-note": "We look for people who combine rigor, initiative, and a thoughtful way of working with others.",
+    "step-one": "Share your profile and experience.",
+    "step-two": "We review every application carefully.",
+    "step-three": "We will contact you if a suitable opportunity arises.",
+    "form-intro": "Tell us who you are and what you could bring to the team.",
+    "form-button": "SEND APPLICATION",
     "form-field-3": "Attach your CV here",
     "form-field-name-1": "Name",
     "form-field-name-2": "Email",
     "form-field-name-3": "Attach your CV",
     "form-field-name-4": "tell us about yourself ",
-    "header": "WORK WITH US",
+    "header": "Work with us",
     "text": "At Muñoz Manzo y Ocampo, we value talent and dedication. If you are interested in joining our team, please complete the form below and attach your CV. We will review your application carefully and consider you for future collaboration.",
-    "confirmation": "Your request has been sent successfully. We will contact you shortly.",
-    "sending": "Sending request..."
+    "confirmation-label": "APPLICATION RECEIVED",
+    "confirmation": "Thank you for your interest in working with us. We have received your application and will review it carefully. We will contact you if your profile matches our needs.",
+    "sending": "Sending application...",
+    "invalid-input": "Complete every field and attach your CV before sending."
 }
