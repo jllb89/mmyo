@@ -26,9 +26,9 @@ export default async function TeamPage({ params: { locale } }: { params: { local
   ];
 
   const asociados = [
-    { name: 'Mayanin Bello Carranza', position: t('consultor') },
+    { name: 'Mayanin Bello Carranza', position: t('asociada') },
     { name: 'Ana María Caballero Rosetti', position: t('asociada') },
-    { name: 'Gabriela Castillo Soriano', position: t('asociada-area-patrimonial') },
+    { name: 'Gabriela Castillo Soriano', position: t('asociada') },
     { name: 'José Arturo Flores Graue', position: t('gerente') },
     { name: 'Jocelyn Mariana García Martínez', position: t('asociada') },
     { name: 'Melanie García Gallardo', position: t('gerente') },
@@ -37,8 +37,8 @@ export default async function TeamPage({ params: { locale } }: { params: { local
     { name: 'Erick Johan Hernández Pérez', position: t('gerente') },
     { name: 'Lizeth Adriana Hernández Aguirre', position: t('asociada') },
     { name: 'Sergio Abraham Jiménez Villeda', position: t('gerente') },
-    { name: 'Raúl Iván Martínez González Vega', position: t('asociado') },
-    { name: 'Ilse Gabriela Moreno López', position: t('asociada-area-patrimonial') },
+    { name: 'Raúl Iván Martínez González Vega', position: t('asociado-senior') },
+    { name: 'Ilse Gabriela Moreno López', position: t('asociada') },
     { name: 'José Mario Pereda Valdez', position: t('asociado') },
   ];
 
