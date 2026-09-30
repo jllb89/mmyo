@@ -19,7 +19,7 @@ export default async function TeamPage({ params: { locale } }: { params: { local
     { name: 'Alejo Muñoz Manzo', position: t('socio-fundador'), image: '/images/MM.png' },
     { name: 'Eduardo Ocampo Gayón', position: t('socio-fundador'), image: '/images/eduardo.webp' },
     { name: 'Gerardo Napolitano Pompa', position: t('socio'), image: '/images/gerardo.webp' },
-    { name: 'Federico Groenewold Rivas', position: t('socio'), image: '/images/fede.webp' },
+    { name: 'Federico Groenewold Rivas', position: t('socio'), image: '/images/fede-portrait.webp' },
     { name: 'Gyselle San Martín', position: t('socio-fundador'), image: '/images/gsm.webp' },
     { name: 'Ma. Elena Paredes Sánchez', position: t('socio'), image: '/images/elena.webp' },
     { name: 'Daniel M. Ramírez Robles', position: t('socio-fundador'), image: '/images/daniel.webp' },
