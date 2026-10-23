@@ -13,6 +13,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
 from PIL import Image, ImageDraw
 
 
@@ -28,6 +29,16 @@ MARGIN = 48
 
 WEBSITE_URL = "https://mmyo.com.mx"
 BROCHURE_URL = f"https://mmyo.vercel.app/brochures/{OUTPUT.name}"
+
+IMAGES = {
+    "cover": ROOT / "public" / "images" / "hero-architecture-v2.png",
+    "overview": ROOT / "public" / "images" / "team.webp",
+    "fiscal": ROOT / "public" / "images" / "f4.png",
+    "legal": ROOT / "public" / "images" / "f2.png",
+    "patrimonial": ROOT / "public" / "images" / "f3.png",
+    "venture-capital": ROOT / "public" / "images" / "f5.png",
+    "alianzas-estrategicas": ROOT / "public" / "images" / "mailing.png",
+}
 
 
 CATEGORIES = [
@@ -179,23 +190,37 @@ def draw_text(c: canvas.Canvas, text: str, x: float, y_top: float, width: float,
     return y
 
 
+def draw_image_cover(c: canvas.Canvas, image_path: Path, x: float, y: float, width: float, height: float) -> None:
+    """Draw an image as an art-directed cover crop inside a clipped rectangle."""
+    with Image.open(image_path) as source:
+        image_width, image_height = source.size
+    scale = max(width / image_width, height / image_height)
+    draw_width = image_width * scale
+    draw_height = image_height * scale
+    draw_x = x + (width - draw_width) / 2
+    draw_y = y + (height - draw_height) / 2
+    clip = c.beginPath()
+    clip.rect(x, y, width, height)
+    c.saveState()
+    c.clipPath(clip, stroke=0, fill=0)
+    c.drawImage(ImageReader(str(image_path)), draw_x, draw_y, draw_width, draw_height, mask="auto")
+    c.restoreState()
+
+
 def page_base(c: canvas.Canvas, lang: str, number: int, background, foreground) -> None:
     c.setFillColor(background)
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
     c.setFillColor(foreground)
     c.setFont("Inter-Medium", 7)
-    c.drawString(MARGIN, PAGE_H - 42, f"{lang.upper()} / {number:02d}")
+    c.drawString(MARGIN, PAGE_H - 38, f"{lang.upper()} / {number:02d}")
     c.drawRightString(PAGE_W - MARGIN, PAGE_H - 42, "MUÑOZ MANZO & OCAMPO")
 
 
 def page_footer(c: canvas.Canvas, number: int, color) -> None:
-    c.setStrokeColor(color)
-    c.setLineWidth(0.65)
-    c.line(MARGIN, 50, PAGE_W - MARGIN, 50)
     c.setFillColor(color)
-    c.setFont("Inter-Medium", 6.5)
-    c.drawString(MARGIN, 33, "MMYO.COM.MX")
-    c.drawRightString(PAGE_W - MARGIN, 33, f"{number:02d}")
+    c.setFont("Inter-Regular", 6.3)
+    c.drawString(MARGIN, 31, "MMYO.COM.MX")
+    c.drawRightString(PAGE_W - MARGIN, 31, f"{number:02d}")
 
 
 def draw_brand(c: canvas.Canvas, x: float, y: float, color) -> None:
@@ -208,124 +233,143 @@ def draw_brand(c: canvas.Canvas, x: float, y: float, color) -> None:
 
 
 def draw_cover(c: canvas.Canvas, lang: str, number: int) -> None:
-    page_base(c, lang, number, BLUE, GOLD)
-    c.setFillColor(GOLD)
-    c.rect(0, PAGE_H - 246, PAGE_W, 246, fill=1, stroke=0)
+    draw_image_cover(c, IMAGES["cover"], 0, 0, PAGE_W, PAGE_H)
+    c.saveState()
     c.setFillColor(BLUE)
-    c.setFont("Inter-Medium", 8)
-    c.drawString(MARGIN, PAGE_H - 78, "PERFIL DE SERVICIOS / 2026" if lang == "es" else "SERVICES PROFILE / 2026")
-    statement = "Perspectiva antes\nque respuesta." if lang == "es" else "Perspective before\nanswers."
-    c.setFont("Inter-Light", 34)
-    for i, line in enumerate(statement.splitlines()):
-        c.drawString(MARGIN, PAGE_H - 132 - i * 39, line)
+    c.setFillAlpha(0.9)
+    c.rect(0, 0, PAGE_W * 0.68, PAGE_H, fill=1, stroke=0)
+    c.restoreState()
     c.setFillColor(GOLD)
+    c.setFont("Inter-Medium", 7.5)
+    c.drawString(MARGIN, PAGE_H - 68, "PERFIL DE SERVICIOS / 2026" if lang == "es" else "SERVICES PROFILE / 2026")
     title = "Una firma.\nCinco perspectivas." if lang == "es" else "One firm.\nFive perspectives."
-    c.setFont("Inter-Light", 37)
+    c.setFont("Inter-Light", 39)
     for i, line in enumerate(title.splitlines()):
-        c.drawString(MARGIN, PAGE_H - 360 - i * 44, line)
+        c.drawString(MARGIN, PAGE_H - 150 - i * 46, line)
     support = (
         "Asesoría personalizada para decisiones empresariales, familiares y patrimoniales complejas."
         if lang == "es"
         else "Personalized counsel for complex business, family, and wealth decisions."
     )
-    draw_text(c, support, MARGIN, PAGE_H - 500, 370, "Inter-Light", 11, 17, GOLD)
-    draw_brand(c, MARGIN, 76, GOLD)
-    c.setFont("Inter-Medium", 6.5)
-    c.drawString(MARGIN, 55, "19.3866° N / 99.2524° W")
+    draw_text(c, support, MARGIN, PAGE_H - 292, 295, "Inter-Regular", 10, 15, GOLD)
+    c.setFillColor(GOLD)
+    c.setFont("Inter-Light", 24)
+    statement = "Perspectiva antes que respuesta." if lang == "es" else "Perspective before answers."
+    draw_text(c, statement, MARGIN, 200, 260, "Inter-Light", 24, 29, GOLD)
+    draw_brand(c, MARGIN, 72, GOLD)
     c.showPage()
 
 
 def draw_overview(c: canvas.Canvas, lang: str, number: int, categories: list[dict]) -> None:
     page_base(c, lang, number, GOLD, BLUE)
     c.setFillColor(BLUE)
-    c.setFont("Inter-Medium", 8)
-    c.drawString(MARGIN, PAGE_H - 95, "MUÑOZ MANZO & OCAMPO")
     title = "Decisiones complejas,\nclaridad compartida." if lang == "es" else "Complex decisions,\nshared clarity."
-    c.setFont("Inter-Light", 31)
+    c.setFont("Inter-Light", 32)
     for i, line in enumerate(title.splitlines()):
-        c.drawString(MARGIN, PAGE_H - 140 - i * 36, line)
+        c.drawString(MARGIN, PAGE_H - 110 - i * 37, line)
     body = (
         "Somos una firma mexicana independiente que combina especialización técnica, visión estratégica y trato personal. Trabajamos de forma interdisciplinaria para acompañar decisiones que atraviesan negocios, patrimonio y familia."
         if lang == "es"
         else "We are an independent Mexican firm combining deep specialization, strategic perspective, and personal attention. Our interdisciplinary work supports decisions across business, wealth, and family."
     )
-    draw_text(c, body, MARGIN, PAGE_H - 255, 450, "Inter-Light", 10.5, 16, BLUE)
-    y = PAGE_H - 390
-    for category in categories:
-        c.setFont("Inter-Medium", 7)
-        c.drawString(MARGIN, y, category["index"])
-        c.setFont("Inter-Light", 15)
-        c.drawString(MARGIN + 52, y - 2, category["title"])
-        c.setLineWidth(0.6)
-        c.line(MARGIN, y - 30, PAGE_W - MARGIN, y - 30)
-        y -= 64
+    draw_text(c, body, MARGIN, PAGE_H - 215, 465, "Inter-Regular", 9.5, 14.5, BLUE)
+    y = PAGE_H - 330
+    col_width = (PAGE_W - MARGIN * 2 - 34) / 2
+    for i, category in enumerate(categories):
+        col = i % 2
+        row = i // 2
+        x = MARGIN + col * (col_width + 34)
+        cy = y - row * 72
+        c.setFont("Inter-Medium", 6.5)
+        c.drawString(x, cy, category["index"])
+        draw_text(c, category["title"], x, cy - 17, col_width, "Inter-Light", 13.5, 16, BLUE)
+    draw_image_cover(c, IMAGES["overview"], 0, 0, PAGE_W, 255)
     page_footer(c, number, BLUE)
     c.showPage()
 
 
-def category_header(c: canvas.Canvas, category: dict, continuation: bool, color, lang: str) -> None:
+def category_header(c: canvas.Canvas, category: dict, continuation: bool, color, lang: str, compact: bool = False, intro_width: float = 410) -> float:
     c.setFillColor(color)
-    c.setFont("Inter-Light", 40)
-    c.drawString(MARGIN, PAGE_H - 118, category["index"])
     c.setFont("Inter-Medium", 7)
     label = ("CONTINUACIÓN" if continuation else "ÁREA DE PRÁCTICA") if lang == "es" else ("CONTINUED" if continuation else "PRACTICE AREA")
-    c.drawString(MARGIN + 82, PAGE_H - 92, label)
-    c.setFont("Inter-Light", 27)
-    c.drawString(MARGIN + 82, PAGE_H - 127, category["title"])
-    intro = ("Servicios 08-13" if lang == "es" else "Services 08-13") if continuation else category["intro"]
-    draw_text(c, intro, MARGIN + 82, PAGE_H - 160, PAGE_W - MARGIN * 2 - 82, "Inter-Light", 9, 13, color)
+    c.drawString(MARGIN, PAGE_H - 76, f"{category['index']} / {label}")
+    c.setFont("Inter-Light", 30 if not compact else 26)
+    title_y = PAGE_H - 118
+    draw_text(c, category["title"], MARGIN, title_y, PAGE_W - MARGIN * 2, "Inter-Light", 30 if not compact else 26, 34 if not compact else 30, color)
+    if not continuation:
+        return draw_text(c, category["intro"], MARGIN, PAGE_H - 182, intro_width, "Inter-Regular", 9, 13.5, color)
+    return PAGE_H - 170
 
 
-def service_row(c: canvas.Canvas, service: dict, number: int, y: float, color, row_height: float) -> None:
+def service_module(c: canvas.Canvas, service: dict, number: int, x: float, y: float, width: float, color, marker_color) -> None:
     c.setFillColor(color)
-    c.setFont("Inter-Medium", 7)
-    c.drawString(MARGIN, y, f"{number:02d}")
-    title_x = MARGIN + 48
-    title_lines = wrap(service["title"], "Inter-Light", 12, PAGE_W - MARGIN - title_x)
-    c.setFont("Inter-Light", 12)
-    ty = y
-    for line in title_lines[:2]:
-        c.drawString(title_x, ty, line)
-        ty -= 15
-    summary_y = y - 34 if len(title_lines) == 1 else y - 44
-    draw_text(c, service["summary"], title_x, summary_y, PAGE_W - MARGIN - title_x, "Inter-Light", 7.4, 10.5, color)
-    c.setStrokeColor(color)
-    c.setLineWidth(0.45)
-    c.line(MARGIN, y - row_height + 17, PAGE_W - MARGIN, y - row_height + 17)
+    c.setFont("Inter-Medium", 6.5)
+    c.drawString(x, y, f"{number:02d}")
+    c.setFillColor(marker_color)
+    c.rect(x, y - 13, 18, 3, fill=1, stroke=0)
+    title_lines = wrap(service["title"], "Inter-Light", 11.2, width)
+    c.setFillColor(color)
+    c.setFont("Inter-Light", 11.2)
+    title_y = y - 31
+    for line in title_lines[:3]:
+        c.drawString(x, title_y, line)
+        title_y -= 13.5
+    summary_y = title_y - 8
+    draw_text(c, service["summary"], x, summary_y, width, "Inter-Regular", 7.2, 10, color)
 
 
-def draw_category_page(c: canvas.Canvas, lang: str, number: int, category: dict, services: list[dict], start_number: int, continuation: bool, background, foreground, row_height: float) -> None:
+def draw_category_page(c: canvas.Canvas, lang: str, number: int, category: dict, services: list[dict], start_number: int, continuation: bool, background, foreground, image_key: str | None = None) -> None:
     page_base(c, lang, number, background, foreground)
-    category_header(c, category, continuation, foreground, lang)
-    y = PAGE_H - 235
+    category_header(c, category, continuation, foreground, lang, compact=continuation, intro_width=325 if image_key else 410)
+    if image_key and not continuation:
+        draw_image_cover(c, IMAGES[image_key], PAGE_W - 190, PAGE_H - 288, 142, 142)
+    top = PAGE_H - (300 if image_key and not continuation else 225)
+    col_gap = 34
+    col_width = (PAGE_W - MARGIN * 2 - col_gap) / 2
+    rows = (len(services) + 1) // 2
+    available = top - 70
+    row_height = min(138, available / max(rows, 1))
     for offset, service in enumerate(services):
-        service_row(c, service, start_number + offset, y, foreground, row_height)
-        y -= row_height
+        col = offset % 2
+        row = offset // 2
+        x = MARGIN + col * (col_width + col_gap)
+        y = top - row * row_height
+        service_module(c, service, start_number + offset, x, y, col_width, foreground, GOLD if background == BLUE else BLUE)
     page_footer(c, number, foreground)
     c.showPage()
 
 
 def draw_close(c: canvas.Canvas, lang: str, number: int, venture: dict, alliances: dict) -> None:
     page_base(c, lang, number, GOLD, BLUE)
-    category_header(c, venture, False, BLUE, lang)
-    y = PAGE_H - 250
-    for i, service in enumerate(venture["services"], 1):
-        service_row(c, service, i, y, BLUE, 88)
-        y -= 88
-    c.setFont("Inter-Light", 28)
-    c.drawString(MARGIN, y - 18, "05")
-    c.setFont("Inter-Light", 19)
-    c.drawString(MARGIN + 58, y - 18, alliances["title"])
-    draw_text(c, alliances["intro"], MARGIN + 58, y - 47, PAGE_W - MARGIN * 2 - 58, "Inter-Light", 8, 12, BLUE)
-    service_row(c, alliances["services"][0], 1, y - 115, BLUE, 96)
-    c.setFont("Inter-Light", 22)
+    draw_image_cover(c, IMAGES["venture-capital"], 0, PAGE_H - 248, PAGE_W, 248)
+    c.saveState()
+    c.setFillColor(BLUE)
+    c.setFillAlpha(0.68)
+    c.rect(0, PAGE_H - 248, PAGE_W, 248, fill=1, stroke=0)
+    c.restoreState()
+    c.setFillColor(GOLD)
+    c.setFont("Inter-Medium", 7)
+    c.drawString(MARGIN, PAGE_H - 82, f"04 / {'ÁREA DE PRÁCTICA' if lang == 'es' else 'PRACTICE AREA'}")
+    draw_text(c, venture["title"], MARGIN, PAGE_H - 122, 360, "Inter-Light", 29, 33, GOLD)
+    service_module(c, venture["services"][0], 1, MARGIN, PAGE_H - 310, 218, BLUE, BLUE)
+    service_module(c, venture["services"][1], 2, MARGIN + 252, PAGE_H - 310, 218, BLUE, BLUE)
+    c.setFillColor(BLUE)
+    c.rect(MARGIN, 286, PAGE_W - MARGIN * 2, 126, fill=1, stroke=0)
+    c.setFillColor(GOLD)
+    c.setFont("Inter-Medium", 6.5)
+    c.drawString(MARGIN + 22, 384, f"05 / {'ÁREA DE PRÁCTICA' if lang == 'es' else 'PRACTICE AREA'}")
+    draw_text(c, alliances["title"], MARGIN + 22, 352, 190, "Inter-Light", 17, 20, GOLD)
+    draw_text(c, alliances["services"][0]["title"], MARGIN + 244, 352, 210, "Inter-Light", 11.2, 14, GOLD)
+    draw_text(c, alliances["services"][0]["summary"], MARGIN + 244, 312, 210, "Inter-Regular", 7.2, 10, GOLD)
+    c.setFillColor(BLUE)
+    c.setFont("Inter-Light", 21)
     closing = "Las buenas decisiones\nempiezan aquí." if lang == "es" else "Good decisions\nstart here."
     for i, line in enumerate(closing.splitlines()):
-        c.drawString(MARGIN, 150 - i * 27, line)
+        c.drawString(MARGIN, 224 - i * 25, line)
     c.setFont("Inter-Regular", 7)
-    c.drawRightString(PAGE_W - MARGIN, 148, "mmyo@mmyo.com.mx · mmyo.com.mx")
+    c.drawRightString(PAGE_W - MARGIN, 222, "mmyo@mmyo.com.mx · mmyo.com.mx")
     address = "Carretera México-Toluca 5420 / Piso 26 · Santa Fe, CDMX" if lang == "es" else "Mexico-Toluca Highway 5420 / Floor 26 · Santa Fe, Mexico City"
-    c.drawRightString(PAGE_W - MARGIN, 132, address)
+    c.drawRightString(PAGE_W - MARGIN, 207, address)
     page_footer(c, number, BLUE)
     c.showPage()
 
@@ -366,11 +410,22 @@ def main() -> None:
     PUBLIC_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     QR_DIR.mkdir(parents=True, exist_ok=True)
 
-    # ReportLab cannot embed the CFF-flavoured Inter OTFs in this project.
-    # The bundled Swiss 721 TTF family is the closest print-safe counterpart.
-    pdfmetrics.registerFont(TTFont("Inter-Light", str(ROOT / "public" / "fonts" / "swiss721-light.ttf")))
-    pdfmetrics.registerFont(TTFont("Inter-Regular", str(ROOT / "public" / "fonts" / "swiss721bt.ttf")))
-    pdfmetrics.registerFont(TTFont("Inter-Medium", str(ROOT / "public" / "fonts" / "swiss721.ttf")))
+    # Keep the print PDF sharp without embedding the multi-megabyte originals on
+    # every Spanish and English page where the same editorial crop is reused.
+    print_image_dir = QR_DIR / "brochure-images"
+    print_image_dir.mkdir(parents=True, exist_ok=True)
+    for key, source in list(IMAGES.items()):
+        target = print_image_dir / f"{key}.jpg"
+        with Image.open(source) as image:
+            image = image.convert("RGB")
+            image.thumbnail((1800, 1800), Image.Resampling.LANCZOS)
+            image.save(target, "JPEG", quality=84, optimize=True)
+        IMAGES[key] = target
+
+    # Static TrueType instances generated from MMYO's Inter variable font.
+    pdfmetrics.registerFont(TTFont("Inter-Light", str(ROOT / "public" / "fonts" / "Inter-Light.ttf")))
+    pdfmetrics.registerFont(TTFont("Inter-Regular", str(ROOT / "public" / "fonts" / "Inter-Regular.ttf")))
+    pdfmetrics.registerFont(TTFont("Inter-Medium", str(ROOT / "public" / "fonts" / "Inter-Medium.ttf")))
 
     data = {"es": brochure_data("es"), "en": brochure_data("en")}
     c = canvas.Canvas(str(OUTPUT), pagesize=A4, pageCompression=1)
@@ -382,11 +437,11 @@ def main() -> None:
         categories = data[lang]
         draw_cover(c, lang, start)
         draw_overview(c, lang, start + 1, categories)
-        draw_category_page(c, lang, start + 2, categories[0], categories[0]["services"][:7], 1, False, BLUE, GOLD, 68)
-        draw_category_page(c, lang, start + 3, categories[0], categories[0]["services"][7:], 8, True, BLUE, GOLD, 78)
-        draw_category_page(c, lang, start + 4, categories[1], categories[1]["services"], 1, False, GOLD, BLUE, 112)
-        draw_category_page(c, lang, start + 5, categories[2], categories[2]["services"][:5], 1, False, BLUE, GOLD, 91)
-        draw_category_page(c, lang, start + 6, categories[2], categories[2]["services"][5:], 6, True, BLUE, GOLD, 112)
+        draw_category_page(c, lang, start + 2, categories[0], categories[0]["services"][:7], 1, False, BLUE, GOLD, "fiscal")
+        draw_category_page(c, lang, start + 3, categories[0], categories[0]["services"][7:], 8, True, BLUE, GOLD)
+        draw_category_page(c, lang, start + 4, categories[1], categories[1]["services"], 1, False, GOLD, BLUE, "legal")
+        draw_category_page(c, lang, start + 5, categories[2], categories[2]["services"][:5], 1, False, BLUE, GOLD, "patrimonial")
+        draw_category_page(c, lang, start + 6, categories[2], categories[2]["services"][5:], 6, True, BLUE, GOLD)
         draw_close(c, lang, start + 7, categories[3], categories[4])
 
     c.save()
