@@ -140,7 +140,6 @@ def normalize(text: str) -> str:
 
 def brochure_data(lang: str) -> list[dict]:
     base = ROOT / "src" / "locales" / lang
-    nav = read_json(base / "navbar.json")
     result = []
     for category in CATEGORIES:
         category_copy = {
@@ -150,11 +149,12 @@ def brochure_data(lang: str) -> list[dict]:
             "intro": normalize(INTROS[lang][category["key"]]),
             "services": [],
         }
-        for namespace, preview_key in category["services"]:
+        for namespace, _preview_key in category["services"]:
+            service_copy = read_json(base / f"{namespace}.json")
             category_copy["services"].append(
                 {
-                    "title": normalize(read_json(base / f"{namespace}.json")["header"].strip()),
-                    "summary": normalize(nav[f"preview-{preview_key}"]),
+                    "title": normalize(service_copy["header"].strip()),
+                    "text": normalize(service_copy["text"].strip()),
                 }
             )
         result.append(category_copy)
@@ -288,90 +288,115 @@ def draw_overview(c: canvas.Canvas, lang: str, number: int, categories: list[dic
     c.showPage()
 
 
-def category_header(c: canvas.Canvas, category: dict, continuation: bool, color, lang: str, compact: bool = False, intro_width: float = 410) -> float:
+def category_header(c: canvas.Canvas, category: dict, continuation: bool, color, lang: str, intro_width: float = 325) -> float:
     c.setFillColor(color)
     c.setFont("Inter-Medium", 7)
     label = ("CONTINUACIÓN" if continuation else "ÁREA DE PRÁCTICA") if lang == "es" else ("CONTINUED" if continuation else "PRACTICE AREA")
     c.drawString(MARGIN, PAGE_H - 76, f"{category['index']} / {label}")
-    c.setFont("Inter-Light", 30 if not compact else 26)
+    c.setFont("Inter-Light", 30 if not continuation else 24)
     title_y = PAGE_H - 118
-    draw_text(c, category["title"], MARGIN, title_y, PAGE_W - MARGIN * 2, "Inter-Light", 30 if not compact else 26, 34 if not compact else 30, color)
+    draw_text(c, category["title"], MARGIN, title_y, PAGE_W - MARGIN * 2, "Inter-Light", 30 if not continuation else 24, 34 if not continuation else 28, color)
     if not continuation:
-        return draw_text(c, category["intro"], MARGIN, PAGE_H - 182, intro_width, "Inter-Regular", 9, 13.5, color)
+        return draw_text(c, category["intro"], MARGIN, PAGE_H - 182, intro_width, "Inter-Regular", 10, 15, color)
     return PAGE_H - 170
 
 
-def service_module(c: canvas.Canvas, service: dict, number: int, x: float, y: float, width: float, color, marker_color) -> None:
+def service_height(service: dict, width: float) -> float:
+    title_lines = wrap(service["title"], "Inter-Light", 15, width)
+    body_lines = wrap(service["text"], "Inter-Regular", 9.4, width)
+    return 25 + len(title_lines) * 18 + 12 + len(body_lines) * 13.6
+
+
+def service_module(c: canvas.Canvas, service: dict, number: int, x: float, y: float, width: float, color, marker_color) -> float:
     c.setFillColor(color)
-    c.setFont("Inter-Medium", 6.5)
+    c.setFont("Inter-Medium", 7)
     c.drawString(x, y, f"{number:02d}")
     c.setFillColor(marker_color)
-    c.rect(x, y - 13, 18, 3, fill=1, stroke=0)
-    title_lines = wrap(service["title"], "Inter-Light", 11.2, width)
+    c.rect(x, y - 14, 22, 3, fill=1, stroke=0)
+    title_lines = wrap(service["title"], "Inter-Light", 15, width)
     c.setFillColor(color)
-    c.setFont("Inter-Light", 11.2)
-    title_y = y - 31
-    for line in title_lines[:3]:
+    c.setFont("Inter-Light", 15)
+    title_y = y - 33
+    for line in title_lines:
         c.drawString(x, title_y, line)
-        title_y -= 13.5
-    summary_y = title_y - 8
-    draw_text(c, service["summary"], x, summary_y, width, "Inter-Regular", 7.2, 10, color)
+        title_y -= 18
+    body_y = title_y - 10
+    return draw_text(c, service["text"], x, body_y, width, "Inter-Regular", 9.4, 13.6, color)
 
 
-def draw_category_page(c: canvas.Canvas, lang: str, number: int, category: dict, services: list[dict], start_number: int, continuation: bool, background, foreground, image_key: str | None = None) -> None:
-    page_base(c, lang, number, background, foreground)
-    category_header(c, category, continuation, foreground, lang, compact=continuation, intro_width=325 if image_key else 410)
-    if image_key and not continuation:
-        draw_image_cover(c, IMAGES[image_key], PAGE_W - 190, PAGE_H - 288, 142, 142)
-    top = PAGE_H - (300 if image_key and not continuation else 225)
+def pack_service_pages(category: dict) -> list[list[list[tuple[int, dict]]]]:
+    """Flow services into two readable columns, adding pages instead of shrinking copy."""
     col_gap = 34
     col_width = (PAGE_W - MARGIN * 2 - col_gap) / 2
-    rows = (len(services) + 1) // 2
-    available = top - 70
-    row_height = min(138, available / max(rows, 1))
-    for offset, service in enumerate(services):
-        col = offset % 2
-        row = offset // 2
-        x = MARGIN + col * (col_width + col_gap)
-        y = top - row * row_height
-        service_module(c, service, start_number + offset, x, y, col_width, foreground, GOLD if background == BLUE else BLUE)
-    page_footer(c, number, foreground)
-    c.showPage()
+    pages: list[list[list[tuple[int, dict]]]] = []
+    page_index = 0
+    columns: list[list[tuple[int, dict]]] = [[], []]
+    used = [0.0, 0.0]
+    column = 0
+    capacity = 500.0
+
+    for number, service in enumerate(category["services"], 1):
+        height = service_height(service, col_width)
+        gap = 34 if columns[column] else 0
+        if used[column] + gap + height > capacity:
+            column += 1
+        if column > 1:
+            pages.append(columns)
+            page_index += 1
+            columns = [[], []]
+            used = [0.0, 0.0]
+            column = 0
+            capacity = 595.0
+        gap = 34 if columns[column] else 0
+        if used[column] + gap + height > capacity and column == 0:
+            column = 1
+            gap = 0
+        if height > capacity:
+            raise ValueError(f"Service copy is too long for one brochure column: {service['title']}")
+        columns[column].append((number, service))
+        used[column] += gap + height
+
+    if columns[0] or columns[1]:
+        pages.append(columns)
+    return pages
 
 
-def draw_close(c: canvas.Canvas, lang: str, number: int, venture: dict, alliances: dict) -> None:
-    page_base(c, lang, number, GOLD, BLUE)
-    draw_image_cover(c, IMAGES["venture-capital"], 0, PAGE_H - 248, PAGE_W, 248)
-    c.saveState()
-    c.setFillColor(BLUE)
-    c.setFillAlpha(0.68)
-    c.rect(0, PAGE_H - 248, PAGE_W, 248, fill=1, stroke=0)
-    c.restoreState()
-    c.setFillColor(GOLD)
-    c.setFont("Inter-Medium", 7)
-    c.drawString(MARGIN, PAGE_H - 82, f"04 / {'ÁREA DE PRÁCTICA' if lang == 'es' else 'PRACTICE AREA'}")
-    draw_text(c, venture["title"], MARGIN, PAGE_H - 122, 360, "Inter-Light", 29, 33, GOLD)
-    service_module(c, venture["services"][0], 1, MARGIN, PAGE_H - 310, 218, BLUE, BLUE)
-    service_module(c, venture["services"][1], 2, MARGIN + 252, PAGE_H - 310, 218, BLUE, BLUE)
-    c.setFillColor(BLUE)
-    c.rect(MARGIN, 286, PAGE_W - MARGIN * 2, 126, fill=1, stroke=0)
-    c.setFillColor(GOLD)
-    c.setFont("Inter-Medium", 6.5)
-    c.drawString(MARGIN + 22, 384, f"05 / {'ÁREA DE PRÁCTICA' if lang == 'es' else 'PRACTICE AREA'}")
-    draw_text(c, alliances["title"], MARGIN + 22, 352, 190, "Inter-Light", 17, 20, GOLD)
-    draw_text(c, alliances["services"][0]["title"], MARGIN + 244, 352, 210, "Inter-Light", 11.2, 14, GOLD)
-    draw_text(c, alliances["services"][0]["summary"], MARGIN + 244, 312, 210, "Inter-Regular", 7.2, 10, GOLD)
-    c.setFillColor(BLUE)
-    c.setFont("Inter-Light", 21)
-    closing = "Las buenas decisiones\nempiezan aquí." if lang == "es" else "Good decisions\nstart here."
-    for i, line in enumerate(closing.splitlines()):
-        c.drawString(MARGIN, 224 - i * 25, line)
-    c.setFont("Inter-Regular", 7)
-    c.drawRightString(PAGE_W - MARGIN, 222, "mmyo@mmyo.com.mx · mmyo.com.mx")
-    address = "Carretera México-Toluca 5420 / Piso 26 · Santa Fe, CDMX" if lang == "es" else "Mexico-Toluca Highway 5420 / Floor 26 · Santa Fe, Mexico City"
-    c.drawRightString(PAGE_W - MARGIN, 207, address)
-    page_footer(c, number, BLUE)
-    c.showPage()
+def draw_category_pages(c: canvas.Canvas, lang: str, start_number: int, category: dict, background, foreground) -> int:
+    pages = pack_service_pages(category)
+    col_gap = 34
+    col_width = (PAGE_W - MARGIN * 2 - col_gap) / 2
+    marker = GOLD if background == BLUE else BLUE
+
+    for page_offset, columns in enumerate(pages):
+        continuation = page_offset > 0
+        page_number = start_number + page_offset
+        page_base(c, lang, page_number, background, foreground)
+        category_header(c, category, continuation, foreground, lang)
+        if not continuation:
+            draw_image_cover(c, IMAGES[category["key"]], PAGE_W - 190, PAGE_H - 288, 142, 142)
+        top = PAGE_H - (300 if not continuation else 170)
+        for column_index, services in enumerate(columns):
+            x = MARGIN + column_index * (col_width + col_gap)
+            y = top
+            for service_index, service in services:
+                service_module(c, service, service_index, x, y, col_width, foreground, marker)
+                y -= service_height(service, col_width) + 34
+
+        if category["key"] == "alianzas-estrategicas" and not columns[1]:
+            x = MARGIN + col_width + col_gap
+            c.setFillColor(foreground)
+            closing = "Las buenas decisiones\nempiezan aquí." if lang == "es" else "Good decisions\nstart here."
+            draw_text(c, closing, x, top, col_width, "Inter-Light", 22, 27, foreground)
+            c.setFont("Inter-Regular", 8)
+            c.drawString(x, top - 86, "mmyo@mmyo.com.mx")
+            c.drawString(x, top - 104, "mmyo.com.mx")
+            address = "Carretera México-Toluca 5420 / Piso 26" if lang == "es" else "Mexico-Toluca Highway 5420 / Floor 26"
+            c.drawString(x, top - 137, address)
+            c.drawString(x, top - 154, "Santa Fe, CDMX" if lang == "es" else "Santa Fe, Mexico City")
+
+        page_footer(c, page_number, foreground)
+        c.showPage()
+    return len(pages)
 
 
 def make_qr_svg(url: str, path: Path, fill: str = "#272E37") -> None:
@@ -433,16 +458,23 @@ def main() -> None:
     c.setAuthor("Muñoz Manzo & Ocampo")
     c.setSubject("Brochure bilingüe de servicios")
 
-    for lang, start in (("es", 1), ("en", 9)):
+    page_number = 1
+    category_colors = {
+        "fiscal": (BLUE, GOLD),
+        "legal": (GOLD, BLUE),
+        "patrimonial": (BLUE, GOLD),
+        "venture-capital": (GOLD, BLUE),
+        "alianzas-estrategicas": (BLUE, GOLD),
+    }
+    for lang in ("es", "en"):
         categories = data[lang]
-        draw_cover(c, lang, start)
-        draw_overview(c, lang, start + 1, categories)
-        draw_category_page(c, lang, start + 2, categories[0], categories[0]["services"][:7], 1, False, BLUE, GOLD, "fiscal")
-        draw_category_page(c, lang, start + 3, categories[0], categories[0]["services"][7:], 8, True, BLUE, GOLD)
-        draw_category_page(c, lang, start + 4, categories[1], categories[1]["services"], 1, False, GOLD, BLUE, "legal")
-        draw_category_page(c, lang, start + 5, categories[2], categories[2]["services"][:5], 1, False, BLUE, GOLD, "patrimonial")
-        draw_category_page(c, lang, start + 6, categories[2], categories[2]["services"][5:], 6, True, BLUE, GOLD)
-        draw_close(c, lang, start + 7, categories[3], categories[4])
+        draw_cover(c, lang, page_number)
+        page_number += 1
+        draw_overview(c, lang, page_number, categories)
+        page_number += 1
+        for category in categories:
+            background, foreground = category_colors[category["key"]]
+            page_number += draw_category_pages(c, lang, page_number, category, background, foreground)
 
     c.save()
     shutil.copyfile(OUTPUT, PUBLIC_OUTPUT)
