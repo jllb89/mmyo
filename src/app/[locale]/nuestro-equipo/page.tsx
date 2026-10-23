@@ -16,13 +16,13 @@ export default async function TeamPage({ params: { locale } }: { params: { local
   ]);
 
   const socios = [
-    { name: 'Alejo Muñoz Manzo', position: t('socio-fundador'), image: '/images/MM.png' },
-    { name: 'Eduardo Ocampo Gayón', position: t('socio-fundador'), image: '/images/eduardo.webp' },
+    { name: 'Alejo Muñoz Manzo', position: t('socio'), image: '/images/MM.png' },
+    { name: 'Eduardo Ocampo Gayón', position: t('socio'), image: '/images/eduardo.webp' },
     { name: 'Gerardo Napolitano Pompa', position: t('socio'), image: '/images/gerardo.webp' },
     { name: 'Federico Groenewold Rivas', position: t('socio'), image: '/images/fede-portrait.webp' },
-    { name: 'Gyselle San Martín', position: t('socio-fundador'), image: '/images/gsm.webp' },
+    { name: 'Gyselle San Martín', position: t('socio'), image: '/images/gsm.webp' },
     { name: 'Ma. Elena Paredes Sánchez', position: t('socio'), image: '/images/elena.webp' },
-    { name: 'Daniel M. Ramírez Robles', position: t('socio-fundador'), image: '/images/daniel.webp' },
+    { name: 'Daniel M. Ramírez Robles', position: t('socio'), image: '/images/daniel.webp' },
   ];
 
   const asociados = [

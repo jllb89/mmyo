@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import styles from './page.module.css';
 import initTranslations from '../../../i18n';
 import TranslationsProvider from '../../../../components/TranslationsProvider';
@@ -49,18 +48,6 @@ export default async function Home({ params: { locale } }: { params: { locale: s
                 <HighlightText text={line} phrases={phrasesToHighlight} />
               </p>
             ))}
-            <div className={styles.linkContainer}>
-              <div className={`${styles.linkWrapper} ${styles.leftAlign}`}>
-{/*                 <Link href="/alianzas-estrategicas/cfo-on-demand" className={styles.serviceLink}>{t('servicio-anterior')}
-                </Link> */}
-                <p className={styles.linkTitle}></p>
-              </div>
-              <div className={`${styles.linkWrapper} ${styles.rightAlign}`}>
-                <Link href="/alianzas-estrategicas/representacion-legal" className={styles.serviceLink}>{t('siguiente-servicio')}
-                </Link>
-                <p className={styles.linkTitle2}>{t('navbar:representacion-legal')}</p>
-              </div>
-            </div>
           </div>
         </div>
         <MailingList />

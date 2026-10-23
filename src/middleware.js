@@ -39,6 +39,8 @@ const categoryServices = {
     'alianzas-estrategicas': new Set(['asesoria-usa', 'representacion-legal', 'cfo-on-demand']),
 };
 
+const retiredServices = new Set(['representacion-legal', 'cfo-on-demand']);
+
 export function middleware (request) {
     const pathname = request.nextUrl.pathname;
     const locales = i18nConfig.locales.join('|');
@@ -51,7 +53,7 @@ export function middleware (request) {
         if (categoryServices[category]?.has(service)) {
             const destination = request.nextUrl.clone();
             destination.pathname = `${locale ? `/${locale}` : ''}/${category}`;
-            destination.hash = service;
+            destination.hash = retiredServices.has(service) ? '' : service;
             return NextResponse.redirect(destination, 308);
         }
     }

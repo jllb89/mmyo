@@ -56,8 +56,6 @@ const CATEGORY_DEFINITIONS = [
   {
     key: 'alianzas-estrategicas', href: '/alianzas-estrategicas', items: [
       ['/alianzas-estrategicas#asesoria-usa', 'asesoria-usa'],
-      ['/alianzas-estrategicas#representacion-legal', 'representacion-legal'],
-      ['/alianzas-estrategicas#cfo-on-demand', 'cfo-on-demand'],
     ],
   },
   { key: 'nuestro-equipo', href: '/nuestro-equipo', items: [] },

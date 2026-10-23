@@ -74,8 +74,6 @@ export const serviceCategories: Record<string, ServiceCategoryDefinition> = {
     index: '05',
     services: [
       { id: 'asesoria-usa', namespace: 'asesoría-fiscal-en-estados-unidos-de-america', previewKey: 'asesoria-usa' },
-      { id: 'representacion-legal', namespace: 'representación-legal', previewKey: 'representacion-legal' },
-      { id: 'cfo-on-demand', namespace: 'chief-financial-officer-on-demand', previewKey: 'cfo-on-demand' },
     ],
   },
 };
