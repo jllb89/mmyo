@@ -27,6 +27,11 @@ GOLD = HexColor("#CBBAA1")
 PAGE_W, PAGE_H = A4
 MARGIN = 48
 
+SERVICE_TITLE_SIZE = 22
+SERVICE_TITLE_LEADING = 26
+SERVICE_BODY_SIZE = 9.4
+SERVICE_BODY_LEADING = 13.6
+
 WEBSITE_URL = "https://mmyo.com.mx"
 BROCHURE_URL = f"https://mmyo.vercel.app/brochures/{OUTPUT.name}"
 
@@ -302,9 +307,9 @@ def category_header(c: canvas.Canvas, category: dict, continuation: bool, color,
 
 
 def service_height(service: dict, width: float) -> float:
-    title_lines = wrap(service["title"], "Inter-Light", 15, width)
-    body_lines = wrap(service["text"], "Inter-Regular", 9.4, width)
-    return 25 + len(title_lines) * 18 + 12 + len(body_lines) * 13.6
+    title_lines = wrap(service["title"], "Inter-Light", SERVICE_TITLE_SIZE, width)
+    body_lines = wrap(service["text"], "Inter-Regular", SERVICE_BODY_SIZE, width)
+    return 25 + len(title_lines) * SERVICE_TITLE_LEADING + 14 + len(body_lines) * SERVICE_BODY_LEADING
 
 
 def service_module(c: canvas.Canvas, service: dict, number: int, x: float, y: float, width: float, color, marker_color) -> float:
@@ -313,21 +318,25 @@ def service_module(c: canvas.Canvas, service: dict, number: int, x: float, y: fl
     c.drawString(x, y, f"{number:02d}")
     c.setFillColor(marker_color)
     c.rect(x, y - 14, 22, 3, fill=1, stroke=0)
-    title_lines = wrap(service["title"], "Inter-Light", 15, width)
+    title_lines = wrap(service["title"], "Inter-Light", SERVICE_TITLE_SIZE, width)
     c.setFillColor(color)
-    c.setFont("Inter-Light", 15)
+    c.setFont("Inter-Light", SERVICE_TITLE_SIZE)
     title_y = y - 33
     for line in title_lines:
         c.drawString(x, title_y, line)
-        title_y -= 18
-    body_y = title_y - 10
-    return draw_text(c, service["text"], x, body_y, width, "Inter-Regular", 9.4, 13.6, color)
+        title_y -= SERVICE_TITLE_LEADING
+    body_y = title_y - 12
+    return draw_text(c, service["text"], x, body_y, width, "Inter-Regular", SERVICE_BODY_SIZE, SERVICE_BODY_LEADING, color)
 
 
 def pack_service_pages(category: dict) -> list[list[list[tuple[int, dict]]]]:
     """Flow services into two readable columns, adding pages instead of shrinking copy."""
     col_gap = 34
     col_width = (PAGE_W - MARGIN * 2 - col_gap) / 2
+    if category["key"] == "alianzas-estrategicas":
+        # Give the single long service a broader editorial column and reserve
+        # the right rail for the closing contact statement.
+        return [[[(1, category["services"][0])], []]]
     pages: list[list[list[tuple[int, dict]]]] = []
     page_index = 0
     columns: list[list[tuple[int, dict]]] = [[], []]
@@ -364,7 +373,12 @@ def pack_service_pages(category: dict) -> list[list[list[tuple[int, dict]]]]:
 def draw_category_pages(c: canvas.Canvas, lang: str, start_number: int, category: dict, background, foreground) -> int:
     pages = pack_service_pages(category)
     col_gap = 34
-    col_width = (PAGE_W - MARGIN * 2 - col_gap) / 2
+    equal_col_width = (PAGE_W - MARGIN * 2 - col_gap) / 2
+    if category["key"] == "alianzas-estrategicas":
+        col_widths = [292, PAGE_W - MARGIN * 2 - col_gap - 292]
+    else:
+        col_widths = [equal_col_width, equal_col_width]
+    col_x = [MARGIN, MARGIN + col_widths[0] + col_gap]
     marker = GOLD if background == BLUE else BLUE
 
     for page_offset, columns in enumerate(pages):
@@ -376,14 +390,16 @@ def draw_category_pages(c: canvas.Canvas, lang: str, start_number: int, category
             draw_image_cover(c, IMAGES[category["key"]], PAGE_W - 190, PAGE_H - 288, 142, 142)
         top = PAGE_H - (300 if not continuation else 170)
         for column_index, services in enumerate(columns):
-            x = MARGIN + column_index * (col_width + col_gap)
+            x = col_x[column_index]
+            col_width = col_widths[column_index]
             y = top
             for service_index, service in services:
                 service_module(c, service, service_index, x, y, col_width, foreground, marker)
                 y -= service_height(service, col_width) + 34
 
         if category["key"] == "alianzas-estrategicas" and not columns[1]:
-            x = MARGIN + col_width + col_gap
+            x = col_x[1]
+            col_width = col_widths[1]
             c.setFillColor(foreground)
             closing = "Las buenas decisiones\nempiezan aquí." if lang == "es" else "Good decisions\nstart here."
             draw_text(c, closing, x, top, col_width, "Inter-Light", 22, 27, foreground)
