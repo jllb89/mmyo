@@ -13,6 +13,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
+from PIL import Image, ImageDraw
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +27,7 @@ PAGE_W, PAGE_H = A4
 MARGIN = 48
 
 WEBSITE_URL = "https://mmyo.com.mx"
-BROCHURE_URL = f"{WEBSITE_URL}/brochures/{OUTPUT.name}"
+BROCHURE_URL = f"https://mmyo.vercel.app/brochures/{OUTPUT.name}"
 
 
 CATEGORIES = [
@@ -344,6 +345,22 @@ def make_qr_svg(url: str, path: Path, fill: str = "#272E37") -> None:
     path.write_text(svg, encoding="utf-8")
 
 
+def make_qr_png(url: str, path: Path, fill=(39, 46, 55, 255), scale: int = 10) -> None:
+    widget = QrCodeWidget(url)
+    widget.qr.make()
+    matrix = widget.qr.modules
+    quiet = 4
+    size = len(matrix) + quiet * 2
+    image = Image.new("RGBA", (size * scale, size * scale), (0, 0, 0, 0))
+    drawing = ImageDraw.Draw(image)
+    for row, values in enumerate(matrix):
+        for col, value in enumerate(values):
+            if value:
+                x0, y0 = (col + quiet) * scale, (row + quiet) * scale
+                drawing.rectangle((x0, y0, x0 + scale - 1, y0 + scale - 1), fill=fill)
+    image.save(path)
+
+
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     PUBLIC_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
@@ -376,6 +393,8 @@ def main() -> None:
     shutil.copyfile(OUTPUT, PUBLIC_OUTPUT)
     make_qr_svg(WEBSITE_URL, QR_DIR / "qr-website.svg")
     make_qr_svg(BROCHURE_URL, QR_DIR / "qr-long-brochure.svg")
+    make_qr_png(BROCHURE_URL, QR_DIR / "qr-long-brochure.png")
+    Image.new("RGBA", (1, 1), (0, 0, 0, 0)).save(QR_DIR / "transparent.png")
     print(OUTPUT)
     print(PUBLIC_OUTPUT)
     print(BROCHURE_URL)
